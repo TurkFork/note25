@@ -1,0 +1,249 @@
+   :root {
+     --bg-dark: #121212;
+     --bg-sidebar: #1a1a2a;
+     --bg-editor: #22222c;
+     --text-light: #e0e0e0;
+     --text-muted: #888;
+     --accent-green: #4caf50;
+     --accent-green-hover: #45a049;
+     --hover-bg: #33334d;
+     --btn-radius: 6px;
+     --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   }
+
+   body {
+     font-family: var(--font-family);
+     background: var(--bg-dark);
+     color: var(--text-light);
+     margin: 0;
+     padding: 0;
+     display: flex;
+     flex-direction: column;
+     height: 100vh;
+     overflow: hidden;
+   }
+
+   header {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 48px;
+     line-height: 48px;
+     padding: 0 1rem;
+     font-size: 1.25rem;
+     box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+     background: var(--bg-sidebar);
+     z-index: 10;
+     user-select: none;
+     font-weight: 600;
+   }
+
+   .main {
+     display: flex;
+     margin-top: 48px; /* match header height */
+     height: calc(100vh - 48px);
+     overflow: hidden;
+     background: var(--bg-dark);
+   }
+
+   .sidebar {
+     width: 280px;
+     background: linear-gradient(135deg, #1f1f36, #12122a);
+     padding: 1rem 1.25rem;
+     box-sizing: border-box;
+     overflow-y: auto;
+     border-right: 1px solid #2f2f44;
+     position: relative;
+     transition: left 0.3s;
+     color: var(--text-light);
+     font-size: 0.9rem;
+   }
+
+   .sidebar-title {
+     font-size: 1.8rem;
+     font-weight: 700;
+     color: var(--accent-green);
+     margin-bottom: 1.25rem;
+     text-align: center;
+     letter-spacing: 2px;
+     user-select: none;
+   }
+
+   .sidebar h2 {
+     color: var(--text-light);
+     margin-bottom: 0.5rem;
+     font-weight: 600;
+   }
+
+   .sidebar button {
+     width: 100%;
+     margin: 0.6rem 0 1.2rem 0;
+     padding: 0.55rem 0;
+     background: var(--accent-green);
+     color: white;
+     border: none;
+     cursor: pointer;
+     font-weight: 600;
+     border-radius: var(--btn-radius);
+     font-size: 1rem;
+     transition: background-color 0.2s ease-in-out;
+   }
+
+   .sidebar button:hover {
+     background: var(--accent-green-hover);
+   }
+
+   .sidebar ul {
+     list-style: none;
+     padding: 0;
+     margin: 0;
+     user-select: none;
+   }
+
+   .sidebar li {
+     margin: 0.5rem 0;
+     cursor: pointer;
+     color: var(--text-light);
+     padding: 6px 8px;
+     border-radius: var(--btn-radius);
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     transition: background-color 0.15s ease;
+     font-weight: 500;
+   }
+
+   .sidebar li:hover {
+     background: var(--hover-bg);
+   }
+
+   .sidebar li.selected {
+     background: var(--accent-green);
+     color: #121212;
+     font-weight: 700;
+   }
+
+   .sidebar li button {
+     font-size: 0.75rem;
+     padding: 0.15rem 0.35rem;
+     margin-left: 0.5rem;
+     border-radius: 4px;
+     border: none;
+     cursor: pointer;
+     background: transparent;
+     color: var(--text-light);
+     transition: color 0.2s ease;
+   }
+
+   .sidebar li button:hover {
+     color: var(--accent-green);
+   }
+
+   .editor {
+     flex: 1;
+     background: var(--bg-editor);
+     padding: 1.5rem;
+     box-sizing: border-box;
+     height: 100%;
+     overflow-y: auto;
+     display: flex;
+     flex-direction: column;
+   }
+
+   .toolbar {
+     margin-bottom: 1rem;
+     display: flex;
+     align-items: center;
+     flex-wrap: wrap;
+     gap: 0.5rem;
+   }
+
+   .toolbar select,
+   .toolbar button {
+     background: #2b2b3b;
+     color: var(--text-light);
+     border: 1px solid #444;
+     padding: 0.3rem 0.7rem;
+     border-radius: var(--btn-radius);
+     cursor: pointer;
+     font-size: 1rem;
+     transition: background-color 0.25s ease;
+   }
+
+   .toolbar select {
+     min-width: 120px;
+   }
+
+   .toolbar button:hover,
+   .toolbar select:hover {
+     background-color: #3b3b55;
+     box-shadow: 0 0 5px var(--accent-green);
+   }
+
+   #currentNoteTitle {
+     font-size: 1.3rem;
+     font-weight: 700;
+     margin-bottom: 0.75rem;
+     user-select: text;
+     color: var(--accent-green);
+     min-height: 1.6em;
+   }
+
+   #noteArea {
+     flex: 1;
+     border: none;
+     resize: none;
+     font-size: 1.15rem;
+     line-height: 1.6;
+     padding: 1rem;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     background: #222236;
+     color: var(--text-light);
+     border-radius: 10px;
+     outline: none;
+     overflow-y: auto;
+     white-space: pre-wrap;
+     word-wrap: break-word;
+     box-shadow: inset 0 0 15px #0008;
+     transition: box-shadow 0.3s ease;
+   }
+
+   #noteArea:focus {
+     box-shadow: inset 0 0 15px var(--accent-green);
+   }
+
+   .save-status {
+     margin-top: 0.75rem;
+     font-size: 0.85rem;
+     color: var(--accent-green);
+     font-weight: 600;
+     font-family: monospace;
+   }
+
+   .sidebar footer {
+     position: absolute;
+     bottom: 1rem;
+     left: 1rem;
+     right: 1rem;
+     font-size: 0.75rem;
+     color: var(--text-muted);
+     user-select: none;
+     text-align: center;
+   }
+
+   /* Responsive tweaks */
+   @media (max-width: 720px) {
+     .main {
+       flex-direction: column;
+     }
+     .sidebar {
+       width: 100%;
+       height: auto;
+       border-right: none;
+       border-bottom: 1px solid #2f2f44;
+     }
+     .editor {
+       height: calc(100vh - 200px);
+     }
+   }
