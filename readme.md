@@ -30,5 +30,5 @@
 
 ### 🔧 Clone this repo
 ```bash
-git clone https://github.com/blacklinked/note25.git
+git clone https://github.com/turkfork/note25.git
 cd note25
