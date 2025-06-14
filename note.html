@@ -5,143 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Note25</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
-  <style>
-    :root {
-      --bg-glass: rgba(255, 255, 255, 0.1);
-      --blur: blur(15px);
-      --text-light: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.6);
-      --accent: #00b8f4;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #101820, #1a1a2e);
-      color: var(--text-light);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .main {
-      display: flex;
-      flex: 1;
-    }
-
-    .sidebar {
-      width: 250px;
-      padding: 1rem;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar-title {
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-bottom: 0.5rem;
-    }
-
-    ul#noteList {
-      list-style: none;
-      padding: 0;
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    footer {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    .editor {
-      flex: 1;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      padding: 0.5rem;
-      border-radius: 10px;
-    }
-
-    select, label, input[type="file"] {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      padding: 0.3rem;
-      border-radius: 6px;
-    }
-
-    #noteArea {
-      flex: 1;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      padding: 1rem;
-      border-radius: 10px;
-      overflow-y: auto;
-    }
-
-    #currentNoteTitle {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .save-status {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-  </style>
+   <link rel="stylesheet" href="styles.css">
+ 
 </head>
 <body>
   <header>Blacklink Note25</header>
   <div class="main">
-    <div class="sidebar">
+    <aside class="sidebar">
       <div>
         <div class="sidebar-title">My Notes</div>
+        <input type="text" id="searchNotes" placeholder="Search notes..." oninput="filterNotes()" />
         <button onclick="createNewNote()">+ New Note</button>
         <ul id="noteList"></ul>
       </div>
-      <footer>&copy; 2025 Blacklink Education — v1.0 beta, Note is licensed under CC-BY-SA-4.0</footer>
-    </div>
-    <div class="editor">
+      <footer>&copy; 2025 Blacklink Education — v1.0 beta<br>Note is licensed under CC-BY-SA-4.0</footer>
+    </aside>
+    <main class="editor">
       <div class="toolbar">
         <select onchange="formatText('fontName', this.value)">
           <option value="Arial">Arial</option>
@@ -169,12 +48,50 @@
         <button onclick="exportNote()">Export Note</button>
         <button onclick="triggerImport()">Import Note</button>
         <input type="file" id="importFileInput" accept=".txt" style="display:none" />
+        <button onclick="toggleTheme()">🌗 Beta</button>
+        <button onclick="addEmojiToTitle()" title="Add's a temporary random emoji to the note name.">😎</button>
+        <button onclick="pinNote()">📌 Beta</button>
+        <span id="liveCounter" style="margin-left:auto; font-size: 0.85rem; color: var(--text-muted);">0 words</span>
       </div>
-      <div id="currentNoteTitle"></div>
+      <div id="currentNoteTitle">Untitled Note</div>
       <div id="noteArea" contenteditable="true"></div>
       <div class="save-status" id="saveStatus">All changes saved.</div>
-    </div>
+    </main>
   </div>
+
+  <script>
+    function filterNotes() {
+      const query = document.getElementById('searchNotes').value.toLowerCase();
+      const notes = document.querySelectorAll('#noteList li');
+      notes.forEach(note => {
+        note.style.display = note.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light-theme');
+    }
+
+    function addEmojiToTitle() {
+      const emojis = ["😎", "🔥", "💡", "📝", "📚", "✨", "🤓", "🚀", "🍩"];
+      const rand = emojis[Math.floor(Math.random() * emojis.length)];
+      const title = document.getElementById('currentNoteTitle');
+      title.textContent += ' ' + rand;
+    }
+
+    function pinNote() {
+      alert("📌 This note is now pinned. (Totally not just a placeholder)");
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('noteArea').innerText.trim();
+      const wordCount = text.split(/\s+/).filter(Boolean).length;
+      const charCount = text.length;
+      document.getElementById('liveCounter').textContent = `${wordCount} words, ${charCount} chars`;
+    }
+
+    setInterval(updateWordCount, 1000);
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
