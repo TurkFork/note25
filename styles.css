@@ -1,177 +1,286 @@
- :root {
-      --bg-glass: rgba(255, 255, 255, 0.05);
-      --blur: blur(18px);
-      --text-light: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.6);
-      --accent: hsl(195, 100%, 55%);
-      --accent-hover: hsl(195, 100%, 65%);
-    }
+/* === NOVA + Note25 Unified Styles === */
 
-    * {
-      box-sizing: border-box;
-    }
+/* --- VARIABLES --- */
+:root {
+  --nova-bg: #0a0a0a;
+  --nova-bg-alt: #121212;
+  --nova-fg: #e3dee9;
+  --nova-muted: #bbb;
+  --nova-accent: #edddd1;
+  --nova-accent-hover: #e4cdbc;
+  --nova-border: #222;
+  --nova-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  --glass: rgba(255, 255, 255, 0.05);
+  --blur: blur(18px);
+  --trust-bg-alt: rgba(255, 255, 255, 0.08);
+  --trust-border: rgba(255, 255, 255, 0.15);
+}
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #101820, #1a1a2e);
-      color: var(--text-light);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+/* --- BASE RESET --- */
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    header {
-      padding: 1rem 1.5rem;
-      font-size: 1.6rem;
-      font-weight: 600;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0a0a0a, #111);
+  color: var(--nova-fg);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+}
 
-    .main {
-      display: flex;
-      flex: 1;
-    }
+/* --- HEADER --- */
+header {
+  padding: 1rem 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  border-bottom: 1px solid var(--nova-border);
+  z-index: 1000;
+}
 
-    .sidebar {
-      width: 260px;
-      padding: 1.5rem 1rem;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-    }
+/* --- MAIN LAYOUT --- */
+.main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
 
-    .sidebar-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-    }
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 260px;
+  padding: 1.5rem 1rem;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--nova-border);
+  overflow: hidden;
+}
+.sidebar-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+ul#noteList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+ul#noteList li {
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+ul#noteList li:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
 
-    button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.6rem 0.9rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      font-weight: 500;
-    }
+/* --- EDITOR --- */
+.editor {
+  position: relative;  /* <-- added */
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+  overflow: hidden;
+}
+#currentNoteTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0 0.25rem;
+}
+#noteArea {
+  flex: 1;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  outline: none;
+  text-align: left; /* ⬅️ Add this */
+}
 
-    button:hover {
-      background: var(--accent-hover);
-    }
+/* --- TOOLBAR --- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  padding: 0.8rem;
+  border-radius: 12px;
+}
 
-    ul#noteList {
-      list-style: none;
-      padding: 0;
-      margin-top: 1rem;
-      flex: 1;
-      overflow-y: auto;
-    }
+/* --- BUTTONS (SMALL NOVA STYLE) --- */
+button,
+.cta,
+input[type="submit"] {
+  background: var(--nova-accent);
+  color: #0a0a0a;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+button:hover,
+.cta:hover,
+input[type="submit"]:hover {
+  background: var(--nova-accent-hover);
+  transform: scale(1.03);
+}
+button:focus,
+.cta:focus {
+  outline: 2px solid var(--nova-accent);
+}
+.cta.magnetic:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px rgba(237, 221, 209, 0.5);
+}
+.cta.magnetic:active {
+  transform: scale(0.97);
+}
 
-    ul#noteList li {
-      padding: 0.5rem;
-      border-radius: 6px;
-      transition: background 0.2s;
-      cursor: pointer;
-    }
+/* --- INPUTS --- */
+select,
+label,
+input[type="file"],
+input[type="text"],
+textarea {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.4rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--nova-accent);
+  background: rgba(255, 255, 255, 0.15);
+}
 
-    ul#noteList li:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
+/* --- FOOTER --- */
+footer {
+  font-size: 0.75rem;
+  color: var(--nova-muted);
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
 
-    footer {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
+/* --- LIVE COUNTER --- */
+.save-status {
+  font-size: 0.85rem;
+  color: var(--nova-muted);
+  padding-left: 0.25rem;
+}
 
-    .editor {
-      flex: 1;
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+/* --- TRUST SIDEBAR --- */
+#trustSidebar {
+  display: none;
+  background: var(--trust-bg-alt, var(--glass));
+  border: 1px solid var(--trust-border, var(--border));
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--nova-shadow, 0 0 10px rgba(0, 0, 0, 0.1));
+  margin-top: 1rem;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1;
+}
 
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      align-items: center;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      padding: 0.8rem;
-      border-radius: 12px;
-    }
+#trustSearchInput {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  box-sizing: border-box;
+}
 
-    select,
-    label,
-    input[type="file"],
-    input[type="text"] {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      padding: 0.4rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
+#trustResults {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
 
-    select:focus,
-    input[type="file"]:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    #currentNoteTitle {
-      font-size: 1.25rem;
-      font-weight: 600;
-      padding: 0 0.25rem;
-    }
-
-    #noteArea {
-      flex: 1;
-      background: var(--bg-glass);
-      backdrop-filter: var(--blur);
-      padding: 1rem;
-      border-radius: 12px;
-      overflow-y: auto;
-      font-size: 1rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    .save-status {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      padding-left: 0.25rem;
-    }
-
-    /* Light theme toggle */
-    body.light-theme {
-      background: linear-gradient(135deg, #ffffff, #e3f2fd);
-      color: #111;
-    }
-
-    body.light-theme .sidebar,
-    body.light-theme .toolbar,
-    body.light-theme header,
-    body.light-theme #noteArea {
-      background: rgba(0, 0, 0, 0.05);
-      color: #111;
-      border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    body.light-theme button {
-      color: black;
-    }
+/* --- NOTE GALLERY --- */
+#noteGallery {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  padding: 2rem;
+  overflow-y: auto;
+  color: white;
+}
+#noteGallery h2 {
+  margin-top: 0;
+}
+#galleryContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+#galleryContent > div {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  width: 250px;
+  cursor: pointer;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+  user-select: none;
+  transition: background 0.2s;
+}
+#galleryContent > div:hover {
+  background: rgba(255,255,255,0.15);
+}
+#noteGallery button.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1rem;
+  background: #ff4f4f;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  box-shadow: var(--nova-shadow);
+}

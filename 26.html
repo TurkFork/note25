@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note26 - Blacklink Education</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #64748b;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border: #475569;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 1rem;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tab-content {
+            height: 100%;
+            padding: 2rem;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Slides */
+        .slides-container {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .slide-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .slide-number {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .slide-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .slide-editor {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            resize: vertical;
+            min-height: 200px;
+            width: 100%;
+        }
+
+        /* Whiteboard */
+        .whiteboard-container {
+            height: 100%;
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .whiteboard-toolbar {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 10;
+            max-width: 200px;
+        }
+
+        .math-toolbar {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            z-index: 10;
+            max-width: 300px;
+        }
+
+        .math-input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-group-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-row {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .whiteboard-canvas {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: crosshair;
+        }
+
+        .drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .whiteboard-element {
+            position: absolute;
+            background: var(--accent);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: move;
+            user-select: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 120px;
+            text-align: center;
+            z-index: 5;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .whiteboard-element.selected {
+            border-color: var(--primary);
+        }
+
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: nw-resize;
+            display: none;
+        }
+
+        .resize-handle.se {
+            bottom: -6px;
+            right: -6px;
+            cursor: se-resize;
+        }
+
+        .resize-handle.ne {
+            top: -6px;
+            right: -6px;
+            cursor: ne-resize;
+        }
+
+        .resize-handle.sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: sw-resize;
+        }
+
+        .resize-handle.nw {
+            top: -6px;
+            left: -6px;
+            cursor: nw-resize;
+        }
+
+        .rotate-handle {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: grab;
+            display: none;
+        }
+
+        .rotate-handle:active {
+            cursor: grabbing;
+        }
+
+        .whiteboard-element.selected .resize-handle,
+        .whiteboard-element.selected .rotate-handle {
+            display: block;
+        }
+
+        .element-controls {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            display: none;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            padding: 0.25rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .whiteboard-element.selected .element-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .control-btn {
+            padding: 0.25rem;
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .control-btn:hover {
+            background: var(--border);
+        }
+
+        .color-picker {
+            width: 30px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .whiteboard-element.shape {
+            background: transparent;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        .shape-svg {
+            width: 100%;
+            height: 100%;
+            min-width: 60px;
+            min-height: 60px;
+        }
+
+        .shape-element {
+            background: transparent;
+            padding: 0;
+            min-width: 80px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0;
+        }
+
+        /* Documents */
+        .docs-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .docs-toolbar {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .doc-editor {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            min-height: 600px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px;
+            line-height: 1.6;
+            resize: none;
+            width: 100%;
+        }
+
+        /* Sheets */
+        .sheets-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sheet-toolbar {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .sheet-table-container {
+            flex: 1;
+            overflow: auto;
+            background: var(--bg-secondary);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .sheet-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .sheet-table th,
+        .sheet-table td {
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .sheet-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sheet-table td {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .sheet-table td:focus {
+            outline: 2px solid var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        /* Notes */
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .note-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .note-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .note-content {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .note-timestamp {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Tasks */
+        .tasks-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .task-input-container {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-input {
+            flex: 1;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .task-item {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .task-text {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .status-bar {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-card,
+        .note-card {
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">B</div>
+                <div class="brand">
+                    <div class="brand-name">Note26</div>
+                    <div class="brand-tagline">Blacklink Education</div>
+                </div>
+            </div>
+
+            <div class="nav-menu">
+                <button class="nav-item active" onclick="switchTab('slides')">
+                    <i class="fas fa-presentation-screen"></i>
+                    <span>Slides</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('whiteboard')">
+                    <i class="fas fa-chalkboard"></i>
+                    <span>Whiteboard</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('docs')">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Documents</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('sheets')">
+                    <i class="fas fa-table"></i>
+                    <span>Sheets</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('notes')">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Notes</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('tasks')">
+                    <i class="fas fa-check-square"></i>
+                    <span>Tasks</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="topbar">
+                <h1 class="topbar-title" id="current-tab-title">Slides</h1>
+                <div class="topbar-actions">
+                    <button class="btn btn-secondary" onclick="saveProject()">
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>
+                    <button class="btn btn-primary" onclick="exportProject()">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Slides Tab -->
+                <div class="tab-content active" id="slides-tab">
+                    <div class="slides-container" id="slides-container">
+                        <div class="slide-card">
+                            <div class="slide-header">
+                                <div class="slide-number">Slide 1</div>
+                                <div class="slide-actions">
+                                    <button class="btn btn-secondary" onclick="duplicateSlide(this)">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="deleteSlide(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea class="slide-editor" placeholder="Enter your slide content here..."></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addSlide()" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i>
+                        Add New Slide
+                    </button>
+                </div>
+
+                <!-- Whiteboard Tab -->
+                <div class="tab-content" id="whiteboard-tab">
+                    <div class="whiteboard-container">
+                        <div class="whiteboard-toolbar">
+                            <div class="tool-group">
+                                <div class="tool-group-label">Draw</div>
+                                <div class="tool-row">
+                                    <button class="btn btn-primary" onclick="setTool('pencil')" title="Pencil">
+                                        <i class="fas fa-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="setTool('line')" title="Line">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="setTool('eraser')" title="Eraser">
+                                        <i class="fas fa-eraser"></i>
+                                    </button>
+                                </div>
+                                <div class="tool-row">
+                                    <input type="color" class="color-picker" id="stroke-color" value="#06b6d4"
+                                        title="Stroke Color">
+                                    <input type="range" min="1" max="10" value="2" id="stroke-width" title="Line Width"
+                                        style="width: 60px;">
+                                </div>
+                            </div>
+
+                            <div class="tool-group">
+                                <div class="tool-group-label">Elements</div>
+                                <div class="tool-row">
+                                    <button class="btn btn-primary" onclick="addTextBox()" title="Text">
+                                        <i class="fas fa-font"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="showMathInput()" title="Math">
+                                        <i class="fas fa-square-root-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="tool-group">
+                                <div class="tool-group-label">Shapes</div>
+                                <div class="tool-row">
+                                    <button class="btn btn-primary" onclick="addShape('rectangle')" title="Rectangle">
+                                        <i class="fas fa-square"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('circle')" title="Circle">
+                                        <i class="fas fa-circle"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('triangle')" title="Triangle">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                </div>
+                                <div class="tool-row">
+                                    <button class="btn btn-primary" onclick="addShape('arrow')" title="Arrow">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('star')" title="Star">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('diamond')" title="Diamond">
+                                        <i class="fas fa-gem"></i>
+                                    </button>
+                                </div>
+                                <div class="tool-row">
+                                    <button class="btn btn-primary" onclick="addShape('hexagon')" title="Hexagon">
+                                        <i class="fas fa-stop"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('heart')" title="Heart">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="addShape('pentagon')" title="Pentagon">
+                                        <i class="fas fa-certificate"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="tool-group">
+                                <div class="tool-group-label">Actions</div>
+                                <div class="tool-row">
+                                    <button class="btn btn-secondary" onclick="clearWhiteboard()" title="Clear">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="undoWhiteboard()" title="Undo">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </div>
+                                <div class="tool-row">
+                                    <button class="btn btn-secondary" onclick="setTool('select')" title="Select Tool">
+                                        <i class="fas fa-mouse-pointer"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="duplicateSelected()" title="Duplicate">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="math-toolbar" id="math-toolbar" style="display: none;">
+                            <div class="tool-group-label">Math Equation (LaTeX)</div>
+                            <input type="text" class="math-input" id="math-input"
+                                placeholder="e.g., x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}">
+                            <button class="btn btn-primary" onclick="addMathEquation()">
+                                <i class="fas fa-plus"></i>
+                                Add Math
+                            </button>
+                            <button class="btn btn-secondary" onclick="hideMathInput()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="whiteboard-canvas" id="whiteboard-canvas">
+                            <canvas class="drawing-canvas" id="drawing-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docs Tab -->
+                <div class="tab-content" id="docs-tab">
+                    <div class="docs-container">
+                        <div class="docs-toolbar">
+                            <button class="btn btn-secondary" onclick="formatDoc('bold')">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button class="btn btn-secondary" onclick="formatDoc('italic')">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button class="btn btn-secondary" onclick="formatDoc('underline')">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                        </div>
+                        <textarea class="doc-editor" id="doc-editor"
+                            placeholder="Start writing your document..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Sheets Tab -->
+                <div class="tab-content" id="sheets-tab">
+                    <div class="sheets-container">
+                        <div class="sheet-toolbar">
+                            <button class="btn btn-primary" onclick="addRow()">
+                                <i class="fas fa-plus"></i>
+                                Row
+                            </button>
+                            <button class="btn btn-primary" onclick="addColumn()">
+                                <i class="fas fa-plus"></i>
+                                Column
+                            </button>
+                        </div>
+                        <div class="sheet-table-container">
+                            <table class="sheet-table" id="sheet-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>D</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>1</th>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>2</th>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>3</th>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div class="tab-content" id="notes-tab">
+                    <div class="notes-container" id="notes-container">
+                        <div class="note-card">
+                            <div class="note-header">
+                                <input type="text" class="note-title" placeholder="Note Title" value="Quick Note">
+                                <button class="btn btn-secondary" onclick="deleteNote(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <textarea class="note-content" placeholder="Write your note here..."></textarea>
+                            <div class="note-timestamp">Created: Today</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addNote()" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i>
+                        Add New Note
+                    </button>
+                </div>
+
+                <!-- Tasks Tab -->
+                <div class="tab-content" id="tasks-tab">
+                    <div class="tasks-container">
+                        <div class="task-input-container">
+                            <input type="text" class="task-input" id="task-input" placeholder="Add a new task...">
+                            <button class="btn btn-primary" onclick="addTask()">
+                                <i class="fas fa-plus"></i>
+                                Add Task
+                            </button>
+                        </div>
+                        <div id="tasks-list">
+                            <div class="task-item">
+                                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                                <div class="task-text">Sample task - click checkbox to complete</div>
+                                <button class="btn btn-secondary" onclick="deleteTask(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <div>
+                    <span>Ready</span>
+                    <span id="word-count">Words: 0</span>
+                </div>
+                <div>
+                    <span>Blacklink Education © 2024</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let slideCount = 1;
+        let noteCount = 1;
+        let currentTool = 'pencil';
+        let drawing = false;
+        let canvas, ctx;
+        let whiteboardElements = [];
+        let selectedElement = null;
+        let isResizing = false;
+        let isRotating = false;
+        let resizeHandle = null;
+        let startAngle = 0;
+
+        // Initialize MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+            // Update title
+            const titles = {
+                slides: 'Slides',
+                whiteboard: 'Whiteboard',
+                docs: 'Documents',
+                sheets: 'Sheets',
+                notes: 'Notes',
+                tasks: 'Tasks'
+            };
+            document.getElementById('current-tab-title').textContent = titles[tabName];
+
+            // Initialize canvas for whiteboard
+            if (tabName === 'whiteboard') {
+                setTimeout(initCanvas, 100);
+            }
+        }
+
+        // Slides functions
+        function addSlide() {
+            slideCount++;
+            const container = document.getElementById('slides-container');
+            const slideCard = document.createElement('div');
+            slideCard.className = 'slide-card';
+            slideCard.innerHTML = `
+                <div class="slide-header">
+                    <div class="slide-number">Slide ${slideCount}</div>
+                    <div class="slide-actions">
+                        <button class="btn btn-secondary" onclick="duplicateSlide(this)">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="deleteSlide(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <textarea class="slide-editor" placeholder="Enter your slide content here..."></textarea>
+            `;
+            container.appendChild(slideCard);
+        }
+
+        function duplicateSlide(btn) {
+            const slide = btn.closest('.slide-card');
+            const clone = slide.cloneNode(true);
+            slideCount++;
+            clone.querySelector('.slide-number').textContent = `Slide ${slideCount}`;
+            slide.parentNode.insertBefore(clone, slide.nextSibling);
+        }
+
+        function deleteSlide(btn) {
+            const slide = btn.closest('.slide-card');
+            if (document.querySelectorAll('.slide-card').length > 1) {
+                slide.remove();
+            }
+        }
+
+        // Whiteboard functions
+        function initCanvas() {
+            canvas = document.getElementById('drawing-canvas');
+            if (!canvas) return;
+
+            ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+        }
+
+        function setTool(tool) {
+            currentTool = tool;
+            // Update cursor based on tool
+            if (canvas) {
+                canvas.style.cursor = tool === 'eraser' ? 'grab' : 'crosshair';
+            }
+        }
+
+        function startDrawing(e) {
+            drawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (currentTool === 'pencil') {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (currentTool === 'pencil') {
+                const strokeColor = document.getElementById('stroke-color').value;
+                const strokeWidth = document.getElementById('stroke-width').value;
+
+                ctx.lineWidth = strokeWidth;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = strokeColor;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            } else if (currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+            }
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        function addTextBox() {
+            const text = prompt('Enter text:');
+            if (text) {
+                createWhiteboardElement('text', text);
+            }
+        }
+
+        function showMathInput() {
+            document.getElementById('math-toolbar').style.display = 'block';
+        }
+
+        function hideMathInput() {
+            document.getElementById('math-toolbar').style.display = 'none';
+        }
+
+        function addMathEquation() {
+            const input = document.getElementById('math-input');
+            const equation = input.value.trim();
+            if (equation) {
+                createMathElement(equation);
+                input.value = '';
+                hideMathInput();
+            }
+        }
+
+        function createMathElement(equation) {
+            const element = document.createElement('div');
+            element.className = 'whiteboard-element math-element';
+            element.innerHTML = `$${equation}$`;
+
+            // Position randomly
+            element.style.left = Math.random() * 300 + 'px';
+            element.style.top = Math.random() * 200 + 100 + 'px';
+
+            document.getElementById('whiteboard-canvas').appendChild(element);
+            makeDraggable(element);
+            whiteboardElements.push(element);
+
+            // Render math
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([element]).catch(err => console.log(err));
+            }
+        }
+
+        function addShape(type) {
+            const element = document.createElement('div');
+            element.className = 'whiteboard-element shape-element';
+            element.style.background = 'transparent';
+            element.style.transform = 'rotate(0deg)';
+
+            // Create SVG shape
+            const svg = createSVGShape(type, '#06b6d4');
+            element.appendChild(svg);
+
+            // Position randomly
+            element.style.left = Math.random() * 300 + 'px';
+            element.style.top = Math.random() * 200 + 100 + 'px';
+
+            // Add resize handles
+            const handles = ['nw', 'ne', 'sw', 'se'];
+            handles.forEach(pos => {
+                const handle = document.createElement('div');
+                handle.className = `resize-handle ${pos}`;
+                handle.addEventListener('mousedown', (e) => startResize(e, element, pos));
+                element.appendChild(handle);
+            });
+
+            // Add rotate handle
+            const rotateHandle = document.createElement('div');
+            rotateHandle.className = 'rotate-handle';
+            rotateHandle.addEventListener('mousedown', (e) => startRotate(e, element));
+            element.appendChild(rotateHandle);
+
+            // Add element controls with shape-specific color picker
+            const controls = document.createElement('div');
+            controls.className = 'element-controls';
+            controls.innerHTML = `
+                <button class="control-btn" onclick="deleteElement(this)" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="control-btn" onclick="bringToFront(this)" title="Bring to Front">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="control-btn" onclick="sendToBack(this)" title="Send to Back">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <input type="color" class="color-picker" onchange="changeShapeColor(this)" value="#06b6d4" title="Shape Color">
+                <button class="control-btn" onclick="toggleShapeFill(this)" title="Toggle Fill">
+                    <i class="fas fa-fill-drip"></i>
+                </button>
+            `;
+            element.appendChild(controls);
+
+            document.getElementById('whiteboard-canvas').appendChild(element);
+            makeDraggable(element);
+            whiteboardElements.push(element);
+
+            // Add selection functionality
+            element.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement(element);
+            });
+        }
+
+        function createSVGShape(type, color) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'shape-svg');
+            svg.setAttribute('viewBox', '0 0 100 100');
+            svg.setAttribute('width', '80');
+            svg.setAttribute('height', '80');
+
+            let path;
+
+            switch (type) {
+                case 'rectangle':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    path.setAttribute('x', '10');
+                    path.setAttribute('y', '10');
+                    path.setAttribute('width', '80');
+                    path.setAttribute('height', '80');
+                    break;
+
+                case 'circle':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    path.setAttribute('cx', '50');
+                    path.setAttribute('cy', '50');
+                    path.setAttribute('r', '40');
+                    break;
+
+                case 'triangle':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '50,10 90,80 10,80');
+                    break;
+
+                case 'arrow':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '10,30 10,70 70,70 70,85 90,50 70,15 70,30');
+                    break;
+
+                case 'star':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '50,5 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35');
+                    break;
+
+                case 'diamond':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '50,10 90,50 50,90 10,50');
+                    break;
+
+                case 'hexagon':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '30,10 70,10 90,50 70,90 30,90 10,50');
+                    break;
+
+                case 'heart':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', 'M50,90 C50,90 10,60 10,35 C10,20 25,10 35,10 C42,10 50,20 50,20 C50,20 58,10 65,10 C75,10 90,20 90,35 C90,60 50,90 50,90');
+                    break;
+
+                case 'pentagon':
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    path.setAttribute('points', '50,10 90,35 75,85 25,85 10,35');
+                    break;
+
+                default:
+                    path = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    path.setAttribute('x', '10');
+                    path.setAttribute('y', '10');
+                    path.setAttribute('width', '80');
+                    path.setAttribute('height', '80');
+            }
+
+            path.setAttribute('fill', color);
+            path.setAttribute('stroke', color);
+            path.setAttribute('stroke-width', '2');
+            svg.appendChild(path);
+
+            return svg;
+        }
+
+        function changeShapeColor(colorInput) {
+            const element = colorInput.closest('.whiteboard-element');
+            const svg = element.querySelector('.shape-svg');
+            const path = svg.querySelector('rect, circle, polygon, path');
+
+            if (path) {
+                path.setAttribute('fill', colorInput.value);
+                path.setAttribute('stroke', colorInput.value);
+            }
+        }
+
+        function toggleShapeFill(btn) {
+            const element = btn.closest('.whiteboard-element');
+            const svg = element.querySelector('.shape-svg');
+            const path = svg.querySelector('rect, circle, polygon, path');
+
+            if (path) {
+                const currentFill = path.getAttribute('fill');
+                if (currentFill === 'none' || currentFill === 'transparent') {
+                    const stroke = path.getAttribute('stroke');
+                    path.setAttribute('fill', stroke);
+                    btn.innerHTML = '<i class="fas fa-fill-drip"></i>';
+                    btn.title = 'Remove Fill';
+                } else {
+                    path.setAttribute('fill', 'none');
+                    btn.innerHTML = '<i class="far fa-circle"></i>';
+                    btn.title = 'Add Fill';
+                }
+            }
+        }
+
+        function createWhiteboardElement(type, content) {
+            const element = document.createElement('div');
+            element.className = 'whiteboard-element';
+            element.textContent = content;
+
+            // Position randomly
+            element.style.left = Math.random() * 300 + 'px';
+            element.style.top = Math.random() * 200 + 100 + 'px';
+            element.style.transform = 'rotate(0deg)';
+
+            // Add resize handles
+            const handles = ['nw', 'ne', 'sw', 'se'];
+            handles.forEach(pos => {
+                const handle = document.createElement('div');
+                handle.className = `resize-handle ${pos}`;
+                handle.addEventListener('mousedown', (e) => startResize(e, element, pos));
+                element.appendChild(handle);
+            });
+
+            // Add rotate handle
+            const rotateHandle = document.createElement('div');
+            rotateHandle.className = 'rotate-handle';
+            rotateHandle.addEventListener('mousedown', (e) => startRotate(e, element));
+            element.appendChild(rotateHandle);
+
+            // Add element controls
+            const controls = document.createElement('div');
+            controls.className = 'element-controls';
+            controls.innerHTML = `
+                <button class="control-btn" onclick="deleteElement(this)" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="control-btn" onclick="bringToFront(this)" title="Bring to Front">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="control-btn" onclick="sendToBack(this)" title="Send to Back">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <input type="color" class="color-picker" onchange="changeElementColor(this)" value="#06b6d4" title="Background Color">`;
+            element.appendChild(controls);
+
+            document.getElementById('whiteboard-canvas').appendChild(element);
+            makeDraggable(element);
+            whiteboardElements.push(element);
+
+            // Add edit functionality for text
+            if (type === 'text') {
+                element.addEventListener('dblclick', function (e) {
+                    e.stopPropagation();
+                    const newText = prompt('Edit text:', this.textContent);
+                    if (newText !== null) this.textContent = newText;
+                });
+            }
+
+            // Add selection functionality
+            element.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement(element);
+            });
+        }
+
+        function makeDraggable(element) {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            element.addEventListener('mousedown', function (e) {
+                if (e.target.classList.contains('resize-handle') ||
+                    e.target.classList.contains('rotate-handle') ||
+                    e.target.classList.contains('control-btn') ||
+                    e.target.classList.contains('color-picker')) {
+                    return;
+                }
+
+                isDragging = true;
+                offsetX = e.offsetX;
+                offsetY = e.offsetY;
+                element.style.zIndex = '1000';
+                e.stopPropagation();
+                selectElement(element);
+            });
+
+            document.addEventListener('mousemove', function (e) {
+                if (!isDragging || isResizing || isRotating) return;
+
+                const rect = document.getElementById('whiteboard-canvas').getBoundingClientRect();
+                element.style.left = (e.clientX - rect.left - offsetX) + 'px';
+                element.style.top = (e.clientY - rect.top - offsetY) + 'px';
+            });
+
+            document.addEventListener('mouseup', function () {
+                if (isDragging) {
+                    isDragging = false;
+                    element.style.zIndex = '5';
+                }
+            });
+        }
+
+        function selectElement(element) {
+            // Deselect previous element
+            if (selectedElement) {
+                selectedElement.classList.remove('selected');
+            }
+
+            // Select new element
+            selectedElement = element;
+            element.classList.add('selected');
+        }
+
+        function startResize(e, element, handle) {
+            e.stopPropagation();
+            isResizing = true;
+            resizeHandle = handle;
+            selectElement(element);
+
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = element.offsetWidth;
+            const startHeight = element.offsetHeight;
+            const startLeft = element.offsetLeft;
+            const startTop = element.offsetTop;
+
+            function handleResize(e) {
+                if (!isResizing) return;
+
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+
+                let newWidth = startWidth;
+                let newHeight = startHeight;
+                let newLeft = startLeft;
+                let newTop = startTop;
+
+                if (handle.includes('e')) {
+                    newWidth = Math.max(50, startWidth + deltaX);
+                }
+                if (handle.includes('w')) {
+                    newWidth = Math.max(50, startWidth - deltaX);
+                    newLeft = startLeft + deltaX;
+                }
+                if (handle.includes('s')) {
+                    newHeight = Math.max(30, startHeight + deltaY);
+                }
+                if (handle.includes('n')) {
+                    newHeight = Math.max(30, startHeight - deltaY);
+                    newTop = startTop + deltaY;
+                }
+
+                element.style.width = newWidth + 'px';
+                element.style.height = newHeight + 'px';
+                element.style.left = newLeft + 'px';
+                element.style.top = newTop + 'px';
+            }
+
+            function stopResize() {
+                isResizing = false;
+                document.removeEventListener('mousemove', handleResize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+
+            document.addEventListener('mousemove', handleResize);
+            document.addEventListener('mouseup', stopResize);
+        }
+
+        function startRotate(e, element) {
+            e.stopPropagation();
+            isRotating = true;
+            selectElement(element);
+
+            const rect = element.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+            const currentTransform = element.style.transform || '';
+            const currentRotation = currentTransform.match(/rotate\(([^)]+)\)/);
+            const currentAngle = currentRotation ? parseFloat(currentRotation[1]) : 0;
+
+            function handleRotate(e) {
+                if (!isRotating) return;
+
+                const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                const deltaAngle = (angle - startAngle) * (180 / Math.PI);
+                const newAngle = currentAngle + deltaAngle;
+
+                element.style.transform = `rotate(${newAngle}deg)`;
+            }
+
+            function stopRotate() {
+                isRotating = false;
+                document.removeEventListener('mousemove', handleRotate);
+                document.removeEventListener('mouseup', stopRotate);
+            }
+
+            document.addEventListener('mousemove', handleRotate);
+            document.addEventListener('mouseup', stopRotate);
+        }
+
+        function deleteElement(btn) {
+            const element = btn.closest('.whiteboard-element');
+            const index = whiteboardElements.indexOf(element);
+            if (index > -1) {
+                whiteboardElements.splice(index, 1);
+            }
+            element.remove();
+            selectedElement = null;
+        }
+
+        function bringToFront(btn) {
+            const element = btn.closest('.whiteboard-element');
+            element.style.zIndex = '10';
+        }
+
+        function sendToBack(btn) {
+            const element = btn.closest('.whiteboard-element');
+            element.style.zIndex = '1';
+        }
+
+        function changeElementColor(colorInput) {
+            const element = colorInput.closest('.whiteboard-element');
+            // Only change background for non-shape elements
+            if (!element.classList.contains('shape-element')) {
+                element.style.backgroundColor = colorInput.value;
+            }
+        }
+
+        function duplicateSelected() {
+            if (!selectedElement) return;
+
+            const clone = selectedElement.cloneNode(true);
+            clone.style.left = (selectedElement.offsetLeft + 20) + 'px';
+            clone.style.top = (selectedElement.offsetTop + 20) + 'px';
+            clone.classList.remove('selected');
+
+            // Re-add event listeners
+            makeDraggable(clone);
+            clone.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement(clone);
+            });
+
+            // Re-add resize handles events
+            const handles = clone.querySelectorAll('.resize-handle');
+            handles.forEach(handle => {
+                const pos = handle.className.split(' ')[1];
+                handle.addEventListener('mousedown', (e) => startResize(e, clone, pos));
+            });
+
+            // Re-add rotate handle event
+            const rotateHandle = clone.querySelector('.rotate-handle');
+            rotateHandle.addEventListener('mousedown', (e) => startRotate(e, clone));
+
+            document.getElementById('whiteboard-canvas').appendChild(clone);
+            whiteboardElements.push(clone);
+            selectElement(clone);
+        }
+
+        // Deselect when clicking on canvas
+        document.addEventListener('click', function (e) {
+            if (e.target.id === 'whiteboard-canvas' || e.target.id === 'drawing-canvas') {
+                if (selectedElement) {
+                    selectedElement.classList.remove('selected');
+                    selectedElement = null;
+                }
+            }
+        });
+
+        function clearWhiteboard() {
+            if (confirm('Clear all whiteboard content?')) {
+                const canvas = document.getElementById('whiteboard-canvas');
+                canvas.innerHTML = '<canvas class="drawing-canvas" id="drawing-canvas"></canvas>';
+                whiteboardElements = [];
+                initCanvas();
+            }
+        }
+
+        function undoWhiteboard() {
+            if (whiteboardElements.length > 0) {
+                const lastElement = whiteboardElements.pop();
+                lastElement.remove();
+            }
+        }
+
+        // Documents functions
+        function formatDoc(command) {
+            const editor = document.getElementById('doc-editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+
+            if (selectedText) {
+                let formattedText = selectedText;
+                if (command === 'bold') formattedText = `**${selectedText}**`;
+                else if (command === 'italic') formattedText = `*${selectedText}*`;
+                else if (command === 'underline') formattedText = `_${selectedText}_`;
+
+                editor.value = editor.value.substring(0, start) + formattedText + editor.value.substring(end);
+                updateWordCount();
+            }
+        }
+
+        // Sheets functions
+        function addRow() {
+            const tbody = document.querySelector('#sheet-table tbody');
+            const rowCount = tbody.rows.length + 1;
+            const colCount = tbody.rows[0].cells.length;
+
+            const newRow = tbody.insertRow();
+            const headerCell = document.createElement('th');
+            headerCell.textContent = rowCount;
+            newRow.appendChild(headerCell);
+
+            for (let i = 1; i < colCount; i++) {
+                const cell = newRow.insertCell();
+                cell.contentEditable = true;
+            }
+        }
+
+        function addColumn() {
+            const table = document.getElementById('sheet-table');
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+
+            const colIndex = headerRow.cells.length;
+            const colLetter = String.fromCharCode(64 + colIndex);
+
+            // Add header
+            const headerCell = document.createElement('th');
+            headerCell.textContent = colLetter;
+            headerRow.appendChild(headerCell);
+
+            // Add cells to body rows
+            bodyRows.forEach(row => {
+                const cell = row.insertCell();
+                cell.contentEditable = true;
+            });
+        }
+
+        // Notes functions
+        function addNote() {
+            noteCount++;
+            const container = document.getElementById('notes-container');
+            const noteCard = document.createElement('div');
+            noteCard.className = 'note-card';
+            noteCard.innerHTML = `
+                <div class="note-header">
+                    <input type="text" class="note-title" placeholder="Note Title" value="Note ${noteCount}">
+                    <button class="btn btn-secondary" onclick="deleteNote(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <textarea class="note-content" placeholder="Write your note here..."></textarea>
+                <div class="note-timestamp">Created: ${new Date().toLocaleDateString()}</div>
+            `;
+            container.appendChild(noteCard);
+        }
+
+        function deleteNote(btn) {
+            const note = btn.closest('.note-card');
+            note.remove();
+        }
+
+        // Tasks functions
+        function addTask() {
+            const input = document.getElementById('task-input');
+            const taskText = input.value.trim();
+            if (!taskText) return;
+
+            const tasksList = document.getElementById('tasks-list');
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                <div class="task-text">${taskText}</div>
+                <button class="btn btn-secondary" onclick="deleteTask(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+            tasksList.appendChild(taskItem);
+            input.value = '';
+        }
+
+        function toggleTask(checkbox) {
+            const taskItem = checkbox.closest('.task-item');
+            const taskText = taskItem.querySelector('.task-text');
+
+            if (checkbox.classList.contains('checked')) {
+                checkbox.classList.remove('checked');
+                checkbox.innerHTML = '';
+                taskText.classList.remove('completed');
+            } else {
+                checkbox.classList.add('checked');
+                checkbox.innerHTML = '<i class="fas fa-check"></i>';
+                taskText.classList.add('completed');
+            }
+        }
+
+        function deleteTask(btn) {
+            const taskItem = btn.closest('.task-item');
+            taskItem.remove();
+        }
+
+        // Project management
+        function saveProject() {
+            const projectData = {
+                slides: Array.from(document.querySelectorAll('.slide-editor')).map(editor => editor.value),
+                document: document.getElementById('doc-editor').value,
+                notes: Array.from(document.querySelectorAll('.note-card')).map(note => ({
+                    title: note.querySelector('.note-title').value,
+                    content: note.querySelector('.note-content').value
+                })),
+                tasks: Array.from(document.querySelectorAll('.task-item')).map(task => ({
+                    text: task.querySelector('.task-text').textContent,
+                    completed: task.querySelector('.task-checkbox').classList.contains('checked')
+                }))
+            };
+
+            localStorage.setItem('note26-project', JSON.stringify(projectData));
+            showNotification('Project saved!', 'success');
+        }
+
+        function exportProject() {
+            const data = localStorage.getItem('note26-project') || '{}';
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'note26-project.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('Project exported!', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: '#10b981',
+                error: '#ef4444',
+                info: '#06b6d4'
+            };
+
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type]};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Word count
+        function updateWordCount() {
+            const docText = document.getElementById('doc-editor').value;
+            const words = docText.trim().split(/\s+/).filter(word => word.length > 0);
+            document.getElementById('word-count').textContent = `Words: ${words.length}`;
+        }
+
+        // Event listeners
+        document.getElementById('doc-editor').addEventListener('input', updateWordCount);
+        document.getElementById('task-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addTask();
+        });
+
+        // Auto-save
+        setInterval(saveProject, 30000);
+
+        // Initialize
+        window.addEventListener('load', function () {
+            const saved = localStorage.getItem('note26-project');
+            if (saved) {
+                showNotification('Previous project loaded', 'success');
+            }
+        });
+    </script>
+</body>
+
+</html>

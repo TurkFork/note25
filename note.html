@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Note25</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
-   <link rel="stylesheet" href="styles.css">
- 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
+<!-- ChromeOS Functionality-->
+ <!-- Head of app.html -->
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#6f42c1" />
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+<!-- ChromeOS Functionality-->
 <body>
   <header>Blacklink Note25</header>
   <div class="main">
@@ -18,7 +29,13 @@
         <button onclick="createNewNote()">+ New Note</button>
         <ul id="noteList"></ul>
       </div>
-      <footer>&copy; 2025 Blacklink Education — v1.0 beta<br>Note is licensed under CC-BY-SA-4.0</footer>
+      <footer>
+        &copy; 2025 Blacklink Education — v25.1.3 beta<br />
+        Note is licensed under CC-BY-SA-4.0<br />
+        <span style="color: #ff4f4f; font-weight: 600;">
+          This build is a confidential release of Note25. Media is not allowed.
+        </span>
+      </footer>
     </aside>
     <main class="editor">
       <div class="toolbar">
@@ -49,49 +66,302 @@
         <button onclick="triggerImport()">Import Note</button>
         <input type="file" id="importFileInput" accept=".txt" style="display:none" />
         <button onclick="toggleTheme()">🌗 Beta</button>
-        <button onclick="addEmojiToTitle()" title="Add's a temporary random emoji to the note name.">😎</button>
-        <button onclick="pinNote()">📌 Beta</button>
-        <span id="liveCounter" style="margin-left:auto; font-size: 0.85rem; color: var(--text-muted);">0 words</span>
+        <button onclick="addEmojiToTitle()" title="Adds a temporary random emoji to the note name.">😎</button>
+        <button onclick="pinNote()">📌 Pin</button>
+        <button onclick="toggleTrustSidebar()" title="Search trusted sources from Trust">🔍 Trust</button>
+        <button onclick="openGallery()">🖼️ Gallery</button>
+        <span
+          id="liveCounter"
+          style="margin-left:auto; font-size: 0.85rem; color: var(--text-muted);"
+          >0 words</span
+        >
       </div>
+
+      <div
+        id="trustSidebar"
+        style="display:none; border: 1px solid var(--border); padding: 10px; margin-top: 10px; background: var(--background-alt);"
+      >
+        <input
+          type="text"
+          id="trustSearchInput"
+          placeholder="Search trusted sources..."
+          style="width: 100%; padding: 6px; margin-bottom: 8px;"
+          onkeypress="if(event.key==='Enter') searchTrust()"
+        />
+        <div
+          id="trustResults"
+          style="max-height: 200px; overflow-y: auto; font-size: 0.9rem; color: var(--text-muted);"
+        >
+          🔍 Start typing and press Enter...
+        </div>
+      </div>
+
       <div id="currentNoteTitle">Untitled Note</div>
-      <div id="noteArea" contenteditable="true"></div>
+      <div id="noteArea" contenteditable="true" spellcheck="true"></div>
       <div class="save-status" id="saveStatus">All changes saved.</div>
     </main>
   </div>
 
-  <script>
-    function filterNotes() {
-      const query = document.getElementById('searchNotes').value.toLowerCase();
-      const notes = document.querySelectorAll('#noteList li');
-      notes.forEach(note => {
-        note.style.display = note.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+  <!-- Note Gallery Modal -->
+  <div
+    id="noteGallery"
+    aria-hidden="false"
+    role="dialog"
+    aria-label="Note Gallery"
+    style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); z-index: 9999; padding: 2rem; overflow-y: auto; color: white;"
+  >
+  <button
+  class="closeBtn"
+  onclick="closeGallery()"
+  aria-label="Close Gallery"
+  style="
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+    background: #ff4f4f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    line-height: 1.2;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(255, 79, 79, 0.6);
+    user-select: none;
+    white-space: nowrap;
+  "
+  onmouseenter="this.style.background='#e04343'"
+  onmouseleave="this.style.background='#ff4f4f'"
+>
+  Close Gallery
+</button>
+    <h2>Your Notes</h2>
+    <div
+      id="galleryContent"
+      style="display: flex; flex-wrap: wrap; gap: 1rem;"
+    ></div>
+  </div>
+
+<script>
+  // === NOTES STORAGE & MANAGEMENT ===
+
+  let notes = JSON.parse(localStorage.getItem("notes")) || [];
+  if (notes.length === 0) {
+    notes = [{
+      id: "welcome",
+      title: "Welcome to Note25",
+      content: `
+        <h2>👋 Welcome to <strong>Note25</strong>!</h2>
+        <p>Your simple, powerful note-taking app by Blacklink Education.</p>
+        <ul>
+          <li>Use the <b>toolbar</b> above to format your text: bold, italic, lists, and more!</li>
+          <li>Click <b>+ New Note</b> to create as many notes as you want — organize your thoughts your way.</li>
+          <li>Pin important notes with the 📌 button to keep them handy.</li>
+          <li>Search your notes quickly with the search box.</li>
+          <li>Everything is saved automatically in your browser — no internet needed.</li>
+        </ul>
+        <h3>🚀 What’s New in Note25 (v25.1.3 Beta):</h3>
+        <ul>
+          <li>🆕 Added emoji quick-add to note titles for fun and flair.</li>
+          <li>🔍 Integrated Trust sidebar for searching verified trusted sources.</li>
+          <li>🎨 Dark/light theme toggle for easier reading in any lighting.</li>
+          <li>📁 Gallery view to browse all your notes visually (coming soon!).</li>
+          <li>🛠️ Improved autosave and localStorage reliability.</li>
+        </ul>
+        <h3>💡 Tips & Tricks:</h3>
+        <ul>
+          <li>Use keyboard shortcuts (Ctrl/Cmd + B/I/U) to speed up formatting.</li>
+          <li>Try exporting notes in HTML or Markdown formats for easy sharing.</li>
+          <li>Keep your notes organized by pinning favorites to the top.</li>
+          <li>Remember, your notes stay private and local to your device.</li>
+        </ul>
+        <p>Thanks for using Note25 — happy writing and stay awesome! ✍️✨</p>
+      `,
+      pinned: false
+    }];
+    saveNotesToStorage();
+  }
+
+  let currentNote = null;
+
+  function saveNotesToStorage() {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }
+
+  function createNewNote() {
+    const id = Date.now().toString();
+    const title = prompt("New note title:", "Untitled Note") || "Untitled Note";
+    const note = { id, title, content: "", pinned: false };
+    notes.push(note);
+    currentNote = note;
+    renderNotes();
+    openNote(note.id);
+    saveNotesToStorage();
+  }
+
+  function renderNotes() {
+    const list = document.getElementById("noteList");
+    list.innerHTML = "";
+
+    const pinned = notes.filter(n => n.pinned);
+    const others = notes.filter(n => !n.pinned);
+
+    [...pinned, ...others].forEach(note => {
+      const li = document.createElement("li");
+      li.textContent = note.pinned ? `📌 ${note.title}` : note.title;
+      li.onclick = () => openNote(note.id);
+      list.appendChild(li);
+    });
+  }
+
+  function openNote(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+
+    currentNote = note;
+    document.getElementById("currentNoteTitle").textContent = note.title;
+    document.getElementById("noteArea").innerHTML = note.content;
+    closeGallery();
+  }
+
+  function pinNote() {
+    if (!currentNote) return alert("No note selected!");
+    notes.forEach(n => (n.pinned = false));
+    currentNote.pinned = true;
+    renderNotes();
+    saveNotesToStorage();
+    alert("📌 Note pinned to top!");
+  }
+
+  function filterNotes() {
+    const query = document.getElementById("searchNotes").value.toLowerCase();
+    const listItems = document.querySelectorAll("#noteList li");
+    listItems.forEach(li => {
+      li.style.display = li.textContent.toLowerCase().includes(query) ? "block" : "none";
+    });
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("light-theme");
+  }
+
+  function addEmojiToTitle() {
+    const emojis = ["😎", "🔥", "💡", "📝", "📚", "✨", "🤓", "🚀", "🍩"];
+    const rand = emojis[Math.floor(Math.random() * emojis.length)];
+    const title = document.getElementById("currentNoteTitle");
+    title.textContent += ' ' + rand;
+  }
+
+  function updateWordCount() {
+    const noteArea = document.getElementById("noteArea");
+    const text = noteArea.innerText.trim();
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    const charCount = text.length;
+    document.getElementById("liveCounter").textContent = `${wordCount} words, ${charCount} chars`;
+
+    if (currentNote) {
+      currentNote.content = noteArea.innerHTML;
+      saveNotesToStorage();
+    }
+  }
+
+  function formatText(command, value = null) {
+    document.execCommand(command, false, value);
+  }
+
+  function updateExportFormat() {}
+
+  function exportNote() {
+    if (!currentNote) return;
+    const format = document.getElementById("exportFormat").value;
+    let dataToExport = currentNote.content;
+
+    if (format === "html") {
+      dataToExport = currentNote.content;
+    } else if (format === "md") {
+      // Markdown conversion logic could go here later
+    }
+
+    const blob = new Blob([dataToExport], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${currentNote.title}.${format}`;
+    a.click();
+  }
+
+  function triggerImport() {
+    document.getElementById("importFileInput").click();
+  }
+
+  document.getElementById("importFileInput").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      if (!currentNote) {
+        alert("No note selected to import into!");
+        return;
+      }
+      currentNote.content = evt.target.result;
+      document.getElementById("noteArea").innerText = evt.target.result;
+      saveNotesToStorage();
+    };
+    reader.readAsText(file);
+  });
+
+  // === NOTE GALLERY ===
+
+  function openGallery() {
+    document.getElementById("noteGallery").style.display = "block";
+    renderGallery();
+  }
+
+  function closeGallery() {
+    document.getElementById("noteGallery").style.display = "none";
+  }
+
+  function renderGallery() {
+    const container = document.getElementById("galleryContent");
+    container.innerHTML = "";
+
+    if (notes.length === 0) {
+      container.textContent = "No notes available.";
+      return;
+    }
+
+    notes.forEach(note => {
+      const card = document.createElement("div");
+      card.textContent = note.title || "(Untitled)";
+      if (note.pinned) card.textContent = "📌 " + card.textContent;
+      card.title = "Click to open this note";
+      card.onclick = () => {
+        openNote(note.id);
+        closeGallery();
+      };
+      container.appendChild(card);
+    });
+  }
+
+  // === SETUP EVENT LISTENERS ===
+  document.addEventListener("DOMContentLoaded", () => {
+    renderNotes();
+    openGallery();
+    setInterval(updateWordCount, 1000);
+
+    const trustInput = document.getElementById("trustSearchInput");
+    if (trustInput) {
+      trustInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          searchTrust();
+        }
       });
     }
-
-    function toggleTheme() {
-      document.body.classList.toggle('light-theme');
-    }
-
-    function addEmojiToTitle() {
-      const emojis = ["😎", "🔥", "💡", "📝", "📚", "✨", "🤓", "🚀", "🍩"];
-      const rand = emojis[Math.floor(Math.random() * emojis.length)];
-      const title = document.getElementById('currentNoteTitle');
-      title.textContent += ' ' + rand;
-    }
-
-    function pinNote() {
-      alert("📌 This note is now pinned. (Totally not just a placeholder)");
-    }
-
-    function updateWordCount() {
-      const text = document.getElementById('noteArea').innerText.trim();
-      const wordCount = text.split(/\s+/).filter(Boolean).length;
-      const charCount = text.length;
-      document.getElementById('liveCounter').textContent = `${wordCount} words, ${charCount} chars`;
-    }
-
-    setInterval(updateWordCount, 1000);
-  </script>
-  <script src="script.js"></script>
+  });
+  
+</script>
+<script src="trust-notes.js"></script>
+<script src="metacode.js"></script>
 </body>
 </html>
