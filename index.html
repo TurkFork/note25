@@ -4,192 +4,812 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Note25 — Smarter Notes for Students</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto&display=swap" rel="stylesheet">
+  <title>Note25 — Professional Document Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     :root {
-      --primary: #6c63ff;
-      --accent: #00ffe0;
-      --bg-dark: #0e0e0e;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --text-light: #e0e0e0;
-      --text-muted: #aaa;
-      --transition: 0.3s;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #f093fb;
+      --accent-2: #764ba2;
+      --bg: #0a0f1e;
+      --bg-secondary: #1a1f35;
+      --card-bg: #1e2538;
+      --text: #ffffff;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #2d3548;
+      --success: #10b981;
+      --glow: rgba(99, 102, 241, 0.5);
     }
 
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem 1rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    header h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      margin: 0 0 0.5rem;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-    }
-
-    header p.subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-    }
-
-    header .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    header .button {
-      padding: 0.8rem 2rem;
-      background: var(--primary);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: 700;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
-    }
-
-    header .button:hover {
-      background: var(--accent);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 255, 224, 0.4);
-    }
-
-    section {
-      max-width: 900px;
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+      height: 100%;
+      z-index: -1;
+      background: var(--bg);
+      overflow: hidden;
     }
 
-    section h2 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      color: var(--accent);
-      margin-bottom: 1rem;
+    .bg-animation::before,
+    .bg-animation::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.3;
+      animation: float 20s infinite ease-in-out;
     }
 
-    .feature-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+    .bg-animation::before {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      top: -300px;
+      left: -200px;
+      animation-delay: 0s;
     }
 
-    .card {
-      background: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      backdrop-filter: blur(6px);
-      transition: transform var(--transition), box-shadow var(--transition);
+    .bg-animation::after {
+      background: linear-gradient(135deg, var(--accent-2), var(--primary));
+      bottom: -300px;
+      right: -200px;
+      animation-delay: 10s;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(108, 99, 255, 0.5);
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(100px, -100px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-100px, 100px) scale(0.9);
+      }
     }
 
-    .card h3 {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    footer {
-      font-size: 0.85rem;
-      color: #555;
-      text-align: center;
-      margin-top: auto;
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 15, 30, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
       padding: 1rem 0;
     }
 
-    @media (max-width: 480px) {
-      section {
-        text-align: center;
+    nav .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent-2));
+      color: white;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      background: var(--bg-secondary);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 10rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .gradient-text {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .hero-image {
+      max-width: 1000px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      padding: 1rem;
+      position: relative;
+    }
+
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(240, 147, 251, 0.1));
+      pointer-events: none;
+    }
+
+    .hero-image-inner {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 3rem;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mockup-text {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 6rem 2rem;
+      background: var(--bg-secondary);
+      position: relative;
+    }
+
+    .features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      border-color: var(--primary);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Comparison Section */
+    .comparison {
+      padding: 6rem 2rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .comparison-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .comparison-card.featured {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(118, 75, 162, 0.1));
+      transform: scale(1.05);
+      box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+    }
+
+    .comparison-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .comparison-card .price {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-card .price-note {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .feature-list li {
+      padding: 0.75rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-list li i {
+      color: var(--success);
+    }
+
+    .feature-list li.disabled {
+      opacity: 0.4;
+    }
+
+    .feature-list li.disabled i {
+      color: var(--text-muted);
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent-2));
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: float 30s linear infinite;
+    }
+
+    .cta-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-secondary);
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+
+    .footer-section h4 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      nav .container {
+        flex-direction: column;
+        gap: 1rem;
       }
 
-      header .buttons {
+      .nav-links {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 8rem 1rem 4rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-card.featured {
+        transform: scale(1);
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Note25</h1>
-    <small> Note26 is in a <strong>unstable</strong> alpha at the moment, bugs will be expected. </small>
-    <p class="subtitle">Smarter notes, effortless workflow — By Blacklink</p>
-    <div class="buttons">
-      <a class="button" href="note.html">Launch App</a>
-      <a class="button" href="26.html" download>Note26 Public Alpha</a>
-    </div>
-  </header>
+  <div class="bg-animation"></div>
 
-  <section>
-    <h2>Core Features</h2>
-    <div class="feature-cards">
-      <div class="card">
-        <h3>Fast Note Taking</h3>
-        <p>Capture ideas, lectures, and to-dos with lightning speed.</p>
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-file-alt"></i>
+        Note25
       </div>
-      <div class="card">
-        <h3>Auto-Save</h3>
-        <p>Your work is always backed up in your browser automatically.</p>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#comparison">Why Note25?</a>
+        <a href="note.html" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> Launch App
+        </a>
       </div>
-      <div class="card">
-        <h3>Dark Mode</h3>
-        <p>Reduce eye strain and work comfortably all day.</p>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-star"></i>
+        Professional Document Editor
       </div>
-      <div class="card">
-        <h3>Cross-App Integration</h3>
-        <p>Embed Docs, Sheets, Slides, and Whiteboards seamlessly.</p>
+      <h1>
+        Your Documents,<br />
+        <span class="gradient-text">Perfected</span>
+      </h1>
+      <p>
+        The most powerful document editor designed for professionals, students, and creators.
+        Combining the simplicity of Google Docs with enterprise-grade features, all running locally in your browser.
+      </p>
+      <div class="hero-buttons">
+        <a href="note.html" class="btn btn-primary">
+          <i class="fas fa-play"></i> Start Creating Free
+        </a>
+        <a href="#features" class="btn btn-secondary">
+          <i class="fas fa-info-circle"></i> Learn More
+        </a>
       </div>
-      <div class="card">
-        <h3>Offline Ready</h3>
-        <p>Continue working even without internet. Syncs automatically.</p>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-inner">
+        <div class="mockup-text">
+          <i class="fas fa-edit"></i> Note25
+        </div>
       </div>
-      <div class="card">
-        <h3>Zero Login</h3>
-        <p>No account, no distractions — just your notes.</p>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">FEATURES</div>
+        <h2>Everything You Need</h2>
+        <p>Powerful features that make document creation effortless and professional</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Lightning Fast</h3>
+          <p>Instant loading, zero lag. Experience the fastest document editor with real-time auto-save and seamless
+            performance.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3>Rich Formatting</h3>
+          <p>Complete text formatting with custom fonts, colors, highlights, and professional typography controls.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-table"></i>
+          </div>
+          <h3>Tables & More</h3>
+          <p>Insert tables, links, lists, and advanced formatting elements with enterprise-level editing tools.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>100% Private</h3>
+          <p>All documents stored locally in your browser. No cloud uploads, no tracking, complete privacy guaranteed.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cloud-download-alt"></i>
+          </div>
+          <h3>Export Anywhere</h3>
+          <p>Export to HTML, plain text, or print directly. Your documents, your format, your choice.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>Smart Search</h3>
+          <p>Find any document instantly with powerful search. Pin favorites and organize effortlessly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-moon"></i>
+          </div>
+          <h3>Dark Mode</h3>
+          <p>Beautiful dark theme that's easy on your eyes during long writing sessions. Toggle instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-keyboard"></i>
+          </div>
+          <h3>Keyboard Shortcuts</h3>
+          <p>Professional keyboard shortcuts for power users. Work faster with Ctrl+B, Ctrl+I, and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3>Undo/Redo</h3>
+          <p>Full editing history with unlimited undo and redo. Make changes confidently without fear.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="comparison" id="comparison">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">COMPARISON</div>
+        <h2>Better Than The Rest</h2>
+        <p>See how Note25 stacks up against traditional document editors</p>
+      </div>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Google Docs</h3>
+          <div class="price">FREE</div>
+          <div class="price-note">Requires account</div>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> Cloud storage</li>
+            <li><i class="fas fa-check-circle"></i> Collaboration</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Offline editing</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Full privacy</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Advanced formatting</li>
+          </ul>
+          <a href="#" class="btn btn-secondary">Traditional</a>
+        </div>
+
+        <div class="comparison-card featured">
+          <h3>Note25</h3>
+          <div class="price">FREE</div>
+          <div class="price-note">No account needed</div>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> Local storage</li>
+            <li><i class="fas fa-check-circle"></i> Instant access</li>
+            <li><i class="fas fa-check-circle"></i> Works offline</li>
+            <li><i class="fas fa-check-circle"></i> 100% private</li>
+            <li><i class="fas fa-check-circle"></i> Pro formatting</li>
+            <li><i class="fas fa-check-circle"></i> Lightning fast</li>
+          </ul>
+          <a href="note.html" class="btn btn-primary">Start Free</a>
+        </div>
+
+        <div class="comparison-card">
+          <h3>Microsoft Word</h3>
+          <div class="price">$70</div>
+          <div class="price-note">Per year</div>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> Desktop app</li>
+            <li><i class="fas fa-check-circle"></i> Advanced features</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Expensive</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Requires install</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Slow startup</li>
+          </ul>
+          <a href="#" class="btn btn-secondary">Paid</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-content">
+      <h2>Ready to Transform Your Writing?</h2>
+      <p>Join thousands of professionals, students, and creators who trust Note25 for their document needs.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="note.html" class="btn" style="background: white; color: var(--primary);">
+          <i class="fas fa-rocket"></i> Launch Note25 Now
+        </a>
+        <a href="26.html" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white;">
+          <i class="fas fa-flask"></i> Try Note26 Alpha
+        </a>
       </div>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 Blacklink Education — All rights reserved
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Note25</h4>
+        <p>Professional document editing, reimagined for the modern web.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Product</h4>
+        <a href="note.html">Launch App</a>
+        <a href="#features">Features</a>
+        <a href="26.html">Note26 Alpha</a>
+      </div>
+      <div class="footer-section">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Keyboard Shortcuts</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <a href="#">About Blacklink</a>
+        <a href="#">Contact</a>
+        <a href="#">License (CC-BY-SA-4.0)</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 Blacklink Education. All rights reserved. Licensed under CC-BY-SA-4.0
+    </div>
   </footer>
 </body>
 

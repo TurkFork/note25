@@ -1,367 +1,1333 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Note25</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #a5b4fc;
+      --secondary: #0f172a;
+      --accent: #f59e0b;
+      --accent-secondary: #ec4899;
+      --bg: #fafbfc;
+      --bg-secondary: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --shadow: 0 2px 8px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 8px 16px rgba(15, 23, 42, 0.08), 0 3px 6px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.12), 0 12px 24px rgba(15, 23, 42, 0.08);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.dark-theme {
+      --bg: #0a0f1e;
+      --bg-secondary: #1a1f35;
+      --card-bg: #1a1f35;
+      --text: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #2d3548;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: var(--transition);
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 30px 30px;
+      animation: float 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(50px, 50px);
+      }
+    }
+
+    .sidebar-header {
+      text-align: center;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sidebar-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    .search-box {
+      position: relative;
+      z-index: 1;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.875rem 1.125rem 0.875rem 2.75rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .note-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+      max-height: calc(100vh - 400px);
+      overflow-y: auto;
+    }
+
+    .note-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .note-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .note-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+
+    .note-item {
+      padding: 0.875rem 1.125rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .note-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateX(4px);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .note-item.active {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 2px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      line-height: 1.6;
+    }
+
+    .main-editor {
+      background: var(--bg);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      background: var(--card-bg);
+      border-bottom: 2px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .note-title-input {
+      font-size: 1.5rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .note-title-input:hover {
+      background: var(--bg);
+    }
+
+    .note-title-input:focus {
+      background: var(--bg);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text);
+    }
+
+    .icon-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .toolbar {
+      background: var(--card-bg);
+      border-bottom: 2px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 0.25rem;
+      padding-right: 0.75rem;
+      border-right: 2px solid var(--border);
+    }
+
+    .toolbar-group:last-child {
+      border-right: none;
+    }
+
+    .toolbar select {
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+    }
+
+    .toolbar-btn {
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.75rem;
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+
+    .toolbar-btn:hover {
+      background: var(--bg);
+      border-color: var(--border);
+    }
+
+    .toolbar-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .color-picker-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .color-btn {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-btn input[type="color"] {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      border: none;
+      cursor: pointer;
+    }
+
+    .editor-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      overflow-y: auto;
+      background: var(--bg-secondary);
+    }
+
+    .editor-page {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 850px;
+      min-height: 1100px;
+      padding: 4rem 5rem;
+      box-shadow: var(--shadow-lg);
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .editor-area {
+      font-size: 1rem;
+      line-height: 1.8;
+      min-height: 1000px;
+      outline: none;
+    }
+
+    .editor-area:focus {
+      outline: none;
+    }
+
+    .editor-area h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .editor-area h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .editor-area h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .editor-area p {
+      margin-bottom: 1rem;
+    }
+
+    .editor-area ul,
+    .editor-area ol {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .editor-area li {
+      margin-bottom: 0.5rem;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      background: var(--card-bg);
+      border-top: 2px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      max-width: 1000px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .modal-close {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-light);
+    }
+
+    .gallery-card:hover::before {
+      opacity: 1;
+    }
+
+    .gallery-card-title {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .gallery-card-preview {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      min-width: 200px;
+      display: none;
+      z-index: 1000;
+    }
+
+    .dropdown-menu.open {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+    }
+
+    .dropdown-item:hover {
+      background: var(--bg);
+      color: var(--primary);
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .toolbar {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+
+      .editor-page {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 
-<!-- ChromeOS Functionality-->
- <!-- Head of app.html -->
-<link rel="manifest" href="/manifest.json" />
-<meta name="theme-color" content="#6f42c1" />
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
-<!-- ChromeOS Functionality-->
 <body>
-  <header>Blacklink Note25</header>
-  <div class="main">
+  <div class="container">
     <aside class="sidebar">
-      <div>
-        <div class="sidebar-title">My Notes</div>
-        <input type="text" id="searchNotes" placeholder="Search notes..." oninput="filterNotes()" />
-        <button onclick="createNewNote()">+ New Note</button>
-        <ul id="noteList"></ul>
-      </div>
-      <footer>
-        &copy; 2025 Blacklink Education — v25.1.3 beta<br />
-        Note is licensed under CC-BY-SA-4.0<br />
-        <span style="color: #ff4f4f; font-weight: 600;">
-          This build is a confidential release of Note25. Media is not allowed.
-        </span>
-      </footer>
-    </aside>
-    <main class="editor">
-      <div class="toolbar">
-        <select onchange="formatText('fontName', this.value)">
-          <option value="Arial">Arial</option>
-          <option value="Courier New">Courier New</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Verdana">Verdana</option>
-        </select>
-        <select onchange="formatText('fontSize', this.value)">
-          <option value="1">Small</option>
-          <option value="3" selected>Normal</option>
-          <option value="5">Large</option>
-          <option value="7">Huge</option>
-        </select>
-        <button onclick="formatText('bold')"><b>B</b></button>
-        <button onclick="formatText('italic')"><i>I</i></button>
-        <button onclick="formatText('underline')"><u>U</u></button>
-        <button onclick="formatText('strikeThrough')"><s>S</s></button>
-        <label for="exportFormat">Export as:</label>
-        <select id="exportFormat" onchange="updateExportFormat()">
-          <option value="txt">Plain Text (.txt)</option>
-          <option value="html">HTML (.html)</option>
-          <option value="md">Markdown (.md)</option>
-        </select>
-        <button onclick="exportNote()">Export Note</button>
-        <button onclick="triggerImport()">Import Note</button>
-        <input type="file" id="importFileInput" accept=".txt" style="display:none" />
-        <button onclick="toggleTheme()">🌗 Beta</button>
-        <button onclick="addEmojiToTitle()" title="Adds a temporary random emoji to the note name.">😎</button>
-        <button onclick="pinNote()">📌 Pin</button>
-        <button onclick="toggleTrustSidebar()" title="Search trusted sources from Trust">🔍 Trust</button>
-        <button onclick="openGallery()">🖼️ Gallery</button>
-        <span
-          id="liveCounter"
-          style="margin-left:auto; font-size: 0.85rem; color: var(--text-muted);"
-          >0 words</span
-        >
+      <div class="sidebar-header">
+        <h1 class="sidebar-title">Note25</h1>
+        <p class="sidebar-subtitle">Professional Document Editor</p>
       </div>
 
-      <div
-        id="trustSidebar"
-        style="display:none; border: 1px solid var(--border); padding: 10px; margin-top: 10px; background: var(--background-alt);"
-      >
-        <input
-          type="text"
-          id="trustSearchInput"
-          placeholder="Search trusted sources..."
-          style="width: 100%; padding: 6px; margin-bottom: 8px;"
-          onkeypress="if(event.key==='Enter') searchTrust()"
-        />
-        <div
-          id="trustResults"
-          style="max-height: 200px; overflow-y: auto; font-size: 0.9rem; color: var(--text-muted);"
-        >
-          🔍 Start typing and press Enter...
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchNotes" placeholder="Search notes..." />
+      </div>
+
+      <button class="btn btn-primary" onclick="createNewNote()">
+        <i class="fas fa-plus"></i> New Document
+      </button>
+
+      <ul class="note-list" id="noteList"></ul>
+
+      <div class="sidebar-footer">
+        <strong>Note25 v25.2.0</strong><br />
+        © 2025 Blacklink Education<br />
+        Licensed under CC-BY-SA-4.0
+      </div>
+    </aside>
+
+    <main class="main-editor">
+      <div class="top-bar">
+        <input type="text" class="note-title-input" id="noteTitle" placeholder="Untitled Document" />
+        <div class="top-actions">
+          <div style="position: relative;">
+            <button class="icon-btn" onclick="toggleFileMenu()">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="dropdown-menu" id="fileMenu">
+              <div class="dropdown-item" onclick="exportNote('html')">
+                <i class="fas fa-file-code"></i> Export as HTML
+              </div>
+              <div class="dropdown-item" onclick="exportNote('txt')">
+                <i class="fas fa-file-alt"></i> Export as Text
+              </div>
+              <div class="dropdown-item" onclick="printNote()">
+                <i class="fas fa-print"></i> Print
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item" onclick="deleteCurrentNote()">
+                <i class="fas fa-trash"></i> Delete
+              </div>
+            </div>
+          </div>
+          <button class="icon-btn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="icon-btn" onclick="openGallery()">
+            <i class="fas fa-th"></i>
+          </button>
         </div>
       </div>
 
-      <div id="currentNoteTitle">Untitled Note</div>
-      <div id="noteArea" contenteditable="true" spellcheck="true"></div>
-      <div class="save-status" id="saveStatus">All changes saved.</div>
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="undo()">
+            <i class="fas fa-undo"></i>
+          </button>
+          <button class="toolbar-btn" onclick="redo()">
+            <i class="fas fa-redo"></i>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <select onchange="formatText('formatBlock', this.value); this.value=''">
+            <option value="">Paragraph</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="p">Normal</option>
+          </select>
+        </div>
+
+        <div class="toolbar-group">
+          <select onchange="formatText('fontName', this.value)">
+            <option value="Inter">Inter</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Verdana">Verdana</option>
+          </select>
+          <select onchange="formatText('fontSize', this.value)">
+            <option value="1">8pt</option>
+            <option value="2">10pt</option>
+            <option value="3" selected>12pt</option>
+            <option value="4">14pt</option>
+            <option value="5">18pt</option>
+            <option value="6">24pt</option>
+            <option value="7">36pt</option>
+          </select>
+        </div>
+
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="formatText('bold')" title="Bold (Ctrl+B)">
+            <i class="fas fa-bold"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('italic')" title="Italic (Ctrl+I)">
+            <i class="fas fa-italic"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('underline')" title="Underline (Ctrl+U)">
+            <i class="fas fa-underline"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('strikeThrough')" title="Strikethrough">
+            <i class="fas fa-strikethrough"></i>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <div class="color-picker-wrapper">
+            <div class="color-btn">
+              <input type="color" id="textColor" onchange="formatText('foreColor', this.value)" value="#0f172a"
+                title="Text Color">
+            </div>
+          </div>
+          <div class="color-picker-wrapper">
+            <div class="color-btn">
+              <input type="color" id="bgColor" onchange="formatText('hiliteColor', this.value)" value="#ffff00"
+                title="Highlight Color">
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="formatText('justifyLeft')" title="Align Left">
+            <i class="fas fa-align-left"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('justifyCenter')" title="Align Center">
+            <i class="fas fa-align-center"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('justifyRight')" title="Align Right">
+            <i class="fas fa-align-right"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('justifyFull')" title="Justify">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="Bullet List">
+            <i class="fas fa-list-ul"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('insertOrderedList')" title="Numbered List">
+            <i class="fas fa-list-ol"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('indent')" title="Indent">
+            <i class="fas fa-indent"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('outdent')" title="Outdent">
+            <i class="fas fa-outdent"></i>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="insertLink()" title="Insert Link">
+            <i class="fas fa-link"></i>
+          </button>
+          <button class="toolbar-btn" onclick="formatText('unlink')" title="Remove Link">
+            <i class="fas fa-unlink"></i>
+          </button>
+          <button class="toolbar-btn" onclick="insertTable()" title="Insert Table">
+            <i class="fas fa-table"></i>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="formatText('removeFormat')" title="Clear Formatting">
+            <i class="fas fa-eraser"></i>
+          </button>
+          <button class="toolbar-btn" onclick="pinNote()" title="Pin Document">
+            <i class="fas fa-thumbtack"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-container">
+        <div class="editor-page">
+          <div class="editor-area" id="noteArea" contenteditable="true" spellcheck="true"></div>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div>
+          <span class="badge">
+            <i class="fas fa-check-circle"></i> Auto-saved
+          </span>
+        </div>
+        <div id="wordCount">0 words · 0 characters</div>
+      </div>
     </main>
   </div>
 
-  <!-- Note Gallery Modal -->
-  <div
-    id="noteGallery"
-    aria-hidden="false"
-    role="dialog"
-    aria-label="Note Gallery"
-    style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); z-index: 9999; padding: 2rem; overflow-y: auto; color: white;"
-  >
-  <button
-  class="closeBtn"
-  onclick="closeGallery()"
-  aria-label="Close Gallery"
-  style="
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1rem;
-    background: #ff4f4f;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    line-height: 1.2;
-    font-weight: 600;
-    box-shadow: 0 2px 6px rgba(255, 79, 79, 0.6);
-    user-select: none;
-    white-space: nowrap;
-  "
-  onmouseenter="this.style.background='#e04343'"
-  onmouseleave="this.style.background='#ff4f4f'"
->
-  Close Gallery
-</button>
-    <h2>Your Notes</h2>
-    <div
-      id="galleryContent"
-      style="display: flex; flex-wrap: wrap; gap: 1rem;"
-    ></div>
+  <div class="modal-overlay" id="galleryModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fas fa-folder-open"></i> All Documents</h2>
+        <button class="modal-close" onclick="closeGallery()">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="gallery-grid" id="galleryContent"></div>
+      </div>
+    </div>
   </div>
 
-<script>
-  // === NOTES STORAGE & MANAGEMENT ===
-
-  let notes = JSON.parse(localStorage.getItem("notes")) || [];
-  if (notes.length === 0) {
-    notes = [{
-      id: "welcome",
-      title: "Welcome to Note25",
-      content: `
-        <h2>👋 Welcome to <strong>Note25</strong>!</h2>
-        <p>Your simple, powerful note-taking app by Blacklink Education.</p>
-        <ul>
-          <li>Use the <b>toolbar</b> above to format your text: bold, italic, lists, and more!</li>
-          <li>Click <b>+ New Note</b> to create as many notes as you want — organize your thoughts your way.</li>
-          <li>Pin important notes with the 📌 button to keep them handy.</li>
-          <li>Search your notes quickly with the search box.</li>
-          <li>Everything is saved automatically in your browser — no internet needed.</li>
-        </ul>
-        <h3>🚀 What’s New in Note25 (v25.1.3 Beta):</h3>
-        <ul>
-          <li>🆕 Added emoji quick-add to note titles for fun and flair.</li>
-          <li>🔍 Integrated Trust sidebar for searching verified trusted sources.</li>
-          <li>🎨 Dark/light theme toggle for easier reading in any lighting.</li>
-          <li>📁 Gallery view to browse all your notes visually (coming soon!).</li>
-          <li>🛠️ Improved autosave and localStorage reliability.</li>
-        </ul>
-        <h3>💡 Tips & Tricks:</h3>
-        <ul>
-          <li>Use keyboard shortcuts (Ctrl/Cmd + B/I/U) to speed up formatting.</li>
-          <li>Try exporting notes in HTML or Markdown formats for easy sharing.</li>
-          <li>Keep your notes organized by pinning favorites to the top.</li>
-          <li>Remember, your notes stay private and local to your device.</li>
-        </ul>
-        <p>Thanks for using Note25 — happy writing and stay awesome! ✍️✨</p>
-      `,
-      pinned: false
-    }];
-    saveNotesToStorage();
-  }
-
-  let currentNote = null;
-
-  function saveNotesToStorage() {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }
-
-  function createNewNote() {
-    const id = Date.now().toString();
-    const title = prompt("New note title:", "Untitled Note") || "Untitled Note";
-    const note = { id, title, content: "", pinned: false };
-    notes.push(note);
-    currentNote = note;
-    renderNotes();
-    openNote(note.id);
-    saveNotesToStorage();
-  }
-
-  function renderNotes() {
-    const list = document.getElementById("noteList");
-    list.innerHTML = "";
-
-    const pinned = notes.filter(n => n.pinned);
-    const others = notes.filter(n => !n.pinned);
-
-    [...pinned, ...others].forEach(note => {
-      const li = document.createElement("li");
-      li.textContent = note.pinned ? `📌 ${note.title}` : note.title;
-      li.onclick = () => openNote(note.id);
-      list.appendChild(li);
-    });
-  }
-
-  function openNote(id) {
-    const note = notes.find(n => n.id === id);
-    if (!note) return;
-
-    currentNote = note;
-    document.getElementById("currentNoteTitle").textContent = note.title;
-    document.getElementById("noteArea").innerHTML = note.content;
-    closeGallery();
-  }
-
-  function pinNote() {
-    if (!currentNote) return alert("No note selected!");
-    notes.forEach(n => (n.pinned = false));
-    currentNote.pinned = true;
-    renderNotes();
-    saveNotesToStorage();
-    alert("📌 Note pinned to top!");
-  }
-
-  function filterNotes() {
-    const query = document.getElementById("searchNotes").value.toLowerCase();
-    const listItems = document.querySelectorAll("#noteList li");
-    listItems.forEach(li => {
-      li.style.display = li.textContent.toLowerCase().includes(query) ? "block" : "none";
-    });
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle("light-theme");
-  }
-
-  function addEmojiToTitle() {
-    const emojis = ["😎", "🔥", "💡", "📝", "📚", "✨", "🤓", "🚀", "🍩"];
-    const rand = emojis[Math.floor(Math.random() * emojis.length)];
-    const title = document.getElementById("currentNoteTitle");
-    title.textContent += ' ' + rand;
-  }
-
-  function updateWordCount() {
-    const noteArea = document.getElementById("noteArea");
-    const text = noteArea.innerText.trim();
-    const wordCount = text.split(/\s+/).filter(Boolean).length;
-    const charCount = text.length;
-    document.getElementById("liveCounter").textContent = `${wordCount} words, ${charCount} chars`;
-
-    if (currentNote) {
-      currentNote.content = noteArea.innerHTML;
-      saveNotesToStorage();
-    }
-  }
-
-  function formatText(command, value = null) {
-    document.execCommand(command, false, value);
-  }
-
-  function updateExportFormat() {}
-
-  function exportNote() {
-    if (!currentNote) return;
-    const format = document.getElementById("exportFormat").value;
-    let dataToExport = currentNote.content;
-
-    if (format === "html") {
-      dataToExport = currentNote.content;
-    } else if (format === "md") {
-      // Markdown conversion logic could go here later
-    }
-
-    const blob = new Blob([dataToExport], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `${currentNote.title}.${format}`;
-    a.click();
-  }
-
-  function triggerImport() {
-    document.getElementById("importFileInput").click();
-  }
-
-  document.getElementById("importFileInput").addEventListener("change", function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      if (!currentNote) {
-        alert("No note selected to import into!");
-        return;
-      }
-      currentNote.content = evt.target.result;
-      document.getElementById("noteArea").innerText = evt.target.result;
-      saveNotesToStorage();
-    };
-    reader.readAsText(file);
-  });
-
-  // === NOTE GALLERY ===
-
-  function openGallery() {
-    document.getElementById("noteGallery").style.display = "block";
-    renderGallery();
-  }
-
-  function closeGallery() {
-    document.getElementById("noteGallery").style.display = "none";
-  }
-
-  function renderGallery() {
-    const container = document.getElementById("galleryContent");
-    container.innerHTML = "";
+  <script>
+    let notes = JSON.parse(localStorage.getItem('note25_documents')) || [];
+    let currentNote = null;
+    let undoStack = [];
+    let redoStack = [];
 
     if (notes.length === 0) {
-      container.textContent = "No notes available.";
-      return;
+      notes = [{
+        id: 'welcome',
+        title: 'Welcome to Note25',
+        content: `
+          <h1>Welcome to Note25</h1>
+          <h2>The Modern Document Editor</h2>
+          
+          <p>Note25 is a powerful, professional-grade document editor that combines the best features of Google Docs and Adobe Acrobat with innovative enhancements designed for modern productivity.</p>
+          
+          <h2>✨ Core Features</h2>
+          
+          <h3>Professional Text Editing</h3>
+          <ul>
+            <li><strong>Rich Formatting Options</strong> - Multiple fonts, sizes, colors, and text styles at your fingertips</li>
+            <li><strong>Advanced Typography</strong> - Precise control over alignment, spacing, and text appearance</li>
+            <li><strong>Smart Lists</strong> - Create structured bullet points and numbered lists with automatic formatting</li>
+            <li><strong>Table Support</strong> - Insert and format tables for organized data presentation</li>
+          </ul>
+          
+          <h3>Document Management</h3>
+          <ul>
+            <li><strong>Instant Auto-Save</strong> - Never lose your work with automatic background saving</li>
+            <li><strong>Quick Search</strong> - Find any document instantly with powerful search functionality</li>
+            <li><strong>Pin Important Documents</strong> - Keep your most-used documents at the top of your list</li>
+            <li><strong>Gallery View</strong> - Browse all your documents visually in an elegant grid layout</li>
+          </ul>
+          
+          <h3>Enhanced Productivity</h3>
+          <ul>
+            <li><strong>Undo/Redo</strong> - Full history management for worry-free editing</li>
+            <li><strong>Keyboard Shortcuts</strong> - Speed up your workflow with intuitive shortcuts (Ctrl+B for bold, Ctrl+I for italic, etc.)</li>
+            <li><strong>Live Word Count</strong> - Real-time statistics on words and characters</li>
+            <li><strong>Multiple Export Formats</strong> - Export to HTML or plain text with a single click</li>
+            <li><strong>Print Ready</strong> - Professional document layout optimized for printing</li>
+          </ul>
+          
+          <h3>Professional Design</h3>
+          <ul>
+            <li><strong>Clean Interface</strong> - Distraction-free writing environment with modern aesthetics</li>
+            <li><strong>Dark Mode</strong> - Easy on the eyes for extended writing sessions</li>
+            <li><strong>Page-Based Layout</strong> - Document appears exactly as it will when printed or exported</li>
+            <li><strong>Responsive Design</strong> - Works beautifully on any screen size</li>
+          </ul>
+          
+          <h2>🚀 Getting Started</h2>
+          
+          <h3>Creating Documents</h3>
+          <p>Click the <strong>"New Document"</strong> button in the sidebar to create a new document. Give it a meaningful title, and start writing immediately.</p>
+          
+          <h3>Formatting Text</h3>
+          <p>Use the comprehensive toolbar above the editor to:</p>
+          <ul>
+            <li>Change fonts and sizes for visual hierarchy</li>
+            <li>Apply bold, italic, underline, or strikethrough styles</li>
+            <li>Adjust text color and highlighting</li>
+            <li>Set paragraph alignment and indentation</li>
+            <li>Create structured lists and tables</li>
+          </ul>
+          
+          <h3>Managing Documents</h3>
+          <p>Your documents are automatically organized in the sidebar. Use the search bar to quickly find any document by name. Pin frequently-used documents to keep them accessible.</p>
+          
+          <h3>Exporting and Sharing</h3>
+          <p>Click the three-dot menu in the top-right corner to export your document in various formats or send it to your printer.</p>
+          
+          <h2>💡 Pro Tips</h2>
+          
+          <ol>
+            <li><strong>Use Heading Styles</strong> - Structure your documents with H1, H2, and H3 headings for better organization</li>
+            <li><strong>Keyboard Shortcuts</strong> - Master common shortcuts to dramatically increase your writing speed</li>
+            <li><strong>Clear Formatting</strong> - Use the eraser icon to remove all formatting and start fresh</li>
+            <li><strong>Gallery View</strong> - Periodically review all your documents in gallery mode to stay organized</li>
+            <li><strong>Pin Active Projects</strong> - Pin documents you're actively working on for quick access</li>
+          </ol>
+          
+          <h2>🎯 Why Note25?</h2>
+          
+          <p>Unlike traditional word processors that can feel bloated and complex, Note25 focuses on what matters: helping you create beautiful documents quickly and efficiently. We've combined the collaborative simplicity of Google Docs with the professional formatting power of Adobe Acrobat, then added modern features like instant search, auto-save, and an elegant interface.</p>
+          
+          <p><strong>Everything is stored locally</strong> in your browser, ensuring your documents remain private and accessible even without an internet connection.</p>
+          
+          <h2>🌟 Ready to Begin?</h2>
+          
+          <p>Delete this welcome document or create a new one using the sidebar button. Your journey to better document creation starts now!</p>
+          
+          <p><em>Note25 - Where professional meets effortless.</em></p>
+        `,
+        pinned: false,
+        createdAt: Date.now()
+      }];
+      saveNotes();
     }
 
-    notes.forEach(note => {
-      const card = document.createElement("div");
-      card.textContent = note.title || "(Untitled)";
-      if (note.pinned) card.textContent = "📌 " + card.textContent;
-      card.title = "Click to open this note";
-      card.onclick = () => {
-        openNote(note.id);
-        closeGallery();
+    function saveNotes() {
+      localStorage.setItem('note25_documents', JSON.stringify(notes));
+    }
+
+    function createNewNote() {
+      const title = prompt('Document title:', 'Untitled Document') || 'Untitled Document';
+      const note = {
+        id: Date.now().toString(),
+        title: title,
+        content: '<p><br></p>',
+        pinned: false,
+        createdAt: Date.now()
       };
-      container.appendChild(card);
-    });
-  }
+      notes.unshift(note);
+      currentNote = note;
+      saveNotes();
+      renderNotes();
+      openNote(note.id);
+    }
 
-  // === SETUP EVENT LISTENERS ===
-  document.addEventListener("DOMContentLoaded", () => {
-    renderNotes();
-    openGallery();
-    setInterval(updateWordCount, 1000);
+    function renderNotes() {
+      const list = document.getElementById('noteList');
+      list.innerHTML = '';
 
-    const trustInput = document.getElementById("trustSearchInput");
-    if (trustInput) {
-      trustInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          searchTrust();
+      const pinned = notes.filter(n => n.pinned);
+      const others = notes.filter(n => !n.pinned);
+      const sorted = [...pinned, ...others];
+
+      sorted.forEach(note => {
+        const li = document.createElement('li');
+        li.className = 'note-item';
+        if (currentNote && currentNote.id === note.id) {
+          li.classList.add('active');
         }
+
+        const icon = document.createElement('i');
+        icon.className = note.pinned ? 'fas fa-thumbtack' : 'far fa-file-alt';
+
+        li.appendChild(icon);
+        li.appendChild(document.createTextNode(' ' + note.title));
+        li.onclick = () => openNote(note.id);
+        list.appendChild(li);
+      });
+
+      filterNotes();
+    }
+
+    function openNote(id) {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+
+      currentNote = note;
+      document.getElementById('noteTitle').value = note.title;
+      document.getElementById('noteArea').innerHTML = note.content;
+      renderNotes();
+      updateWordCount();
+      closeGallery();
+    }
+
+    function pinNote() {
+      if (!currentNote) return alert('No document selected!');
+      currentNote.pinned = !currentNote.pinned;
+      saveNotes();
+      renderNotes();
+    }
+
+    function deleteCurrentNote() {
+      if (!currentNote) return alert('No document selected!');
+      if (!confirm(`Delete "${currentNote.title}"?`)) return;
+
+      notes = notes.filter(n => n.id !== currentNote.id);
+      saveNotes();
+
+      if (notes.length > 0) {
+        openNote(notes[0].id);
+      } else {
+        currentNote = null;
+        document.getElementById('noteTitle').value = '';
+        document.getElementById('noteArea').innerHTML = '';
+      }
+
+      renderNotes();
+      toggleFileMenu();
+    }
+
+    function filterNotes() {
+      const query = document.getElementById('searchNotes').value.toLowerCase();
+      const items = document.querySelectorAll('.note-item');
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? 'flex' : 'none';
       });
     }
-  });
-  
-</script>
-<script src="trust-notes.js"></script>
-<script src="metacode.js"></script>
+
+    function formatText(command, value = null) {
+      document.execCommand(command, false, value);
+      document.getElementById('noteArea').focus();
+    }
+
+    function undo() {
+      document.execCommand('undo', false, null);
+    }
+
+    function redo() {
+      document.execCommand('redo', false, null);
+    }
+
+    function insertLink() {
+      const url = prompt('Enter URL:');
+      if (url) {
+        formatText('createLink', url);
+      }
+    }
+
+    function insertTable() {
+      const rows = prompt('Number of rows:', '3');
+      const cols = prompt('Number of columns:', '3');
+
+      if (rows && cols) {
+        let table = '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 1rem 0;">';
+        for (let i = 0; i < parseInt(rows); i++) {
+          table += '<tr>';
+          for (let j = 0; j < parseInt(cols); j++) {
+            table += '<td style="border: 1px solid #ddd; padding: 8px;">&nbsp;</td>';
+          }
+          table += '</tr>';
+        }
+        table += '</table>';
+
+        document.execCommand('insertHTML', false, table);
+      }
+    }
+
+    function exportNote(format) {
+      if (!currentNote) return alert('No document selected!');
+
+      let dataToExport = currentNote.content;
+      let mimeType = 'text/html';
+      let extension = format;
+
+      if (format === 'txt') {
+        const temp = document.createElement('div');
+        temp.innerHTML = currentNote.content;
+        dataToExport = temp.textContent || temp.innerText;
+        mimeType = 'text/plain';
+      }
+
+      const blob = new Blob([dataToExport], { type: mimeType });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentNote.title}.${extension}`;
+      a.click();
+
+      toggleFileMenu();
+    }
+
+    function printNote() {
+      if (!currentNote) return alert('No document selected!');
+
+      const printWindow = window.open('', '', 'width=800,height=600');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>${currentNote.title}</title>
+            <style>
+              body { font-family: 'Inter', Arial, sans-serif; padding: 2rem; line-height: 1.6; }
+              h1 { font-size: 2rem; margin-bottom: 1rem; }
+              h2 { font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+              h3 { font-size: 1.25rem; margin-top: 1rem; margin-bottom: 0.5rem; }
+              p { margin-bottom: 1rem; }
+              ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+              table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+              td { border: 1px solid #ddd; padding: 8px; }
+            </style>
+          </head>
+          <body>${currentNote.content}</body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+
+      toggleFileMenu();
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      const isDark = document.body.classList.contains('dark-theme');
+      localStorage.setItem('note25_theme', isDark ? 'dark' : 'light');
+
+      const icon = event.target.closest('button').querySelector('i');
+      icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    function toggleFileMenu() {
+      const menu = document.getElementById('fileMenu');
+      menu.classList.toggle('open');
+    }
+
+    function openGallery() {
+      document.getElementById('galleryModal').classList.add('open');
+      renderGallery();
+    }
+
+    function closeGallery() {
+      document.getElementById('galleryModal').classList.remove('open');
+    }
+
+    function renderGallery() {
+      const container = document.getElementById('galleryContent');
+      container.innerHTML = '';
+
+      if (notes.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">No documents yet. Create your first document!</p>';
+        return;
+      }
+
+      notes.forEach(note => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+
+        const title = document.createElement('div');
+        title.className = 'gallery-card-title';
+
+        const icon = document.createElement('i');
+        icon.className = note.pinned ? 'fas fa-thumbtack' : 'far fa-file-alt';
+        title.appendChild(icon);
+        title.appendChild(document.createTextNode(' ' + note.title));
+
+        const preview = document.createElement('div');
+        preview.className = 'gallery-card-preview';
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = note.content;
+        preview.textContent = tempDiv.textContent || 'Empty document';
+
+        card.appendChild(title);
+        card.appendChild(preview);
+
+        card.onclick = () => {
+          openNote(note.id);
+        };
+
+        container.appendChild(card);
+      });
+    }
+
+    function updateWordCount() {
+      const area = document.getElementById('noteArea');
+      const text = area.innerText.trim();
+      const words = text.split(/\s+/).filter(Boolean).length;
+      const chars = text.length;
+
+      document.getElementById('wordCount').textContent = `${words} words · ${chars} characters`;
+
+      if (currentNote) {
+        currentNote.content = area.innerHTML;
+        saveNotes();
+      }
+    }
+
+    function updateTitle() {
+      if (currentNote) {
+        currentNote.title = document.getElementById('noteTitle').value || 'Untitled Document';
+        saveNotes();
+        renderNotes();
+      }
+    }
+
+    document.getElementById('searchNotes').oninput = filterNotes;
+    document.getElementById('noteArea').oninput = updateWordCount;
+    document.getElementById('noteTitle').oninput = updateTitle;
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('fileMenu');
+      if (menu.classList.contains('open') && !e.target.closest('.top-actions')) {
+        menu.classList.remove('open');
+      }
+    });
+
+    document.getElementById('galleryModal').onclick = (e) => {
+      if (e.target.id === 'galleryModal') {
+        closeGallery();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('note25_theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.querySelector('.top-actions .icon-btn i').className = 'fas fa-sun';
+      }
+
+      renderNotes();
+      if (notes.length > 0) {
+        openNote(notes[0].id);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key.toLowerCase()) {
+          case 'b':
+            e.preventDefault();
+            formatText('bold');
+            break;
+          case 'i':
+            e.preventDefault();
+            formatText('italic');
+            break;
+          case 'u':
+            e.preventDefault();
+            formatText('underline');
+            break;
+        }
+      }
+    });
+  </script>
 </body>
+
 </html>
