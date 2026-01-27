@@ -1,0 +1,60 @@
+<div class="modal-overlay" id="aero-modal">
+    <div class="modal modal-large">
+        <div class="modal-header aero-header">
+            <div>
+                <p class="modal-badge">AERO</p>
+                <h2 class="modal-title">Aero</h2>
+            </div>
+            <button class="btn btn-ghost btn-icon" type="button" onclick="closeAeroModal()" aria-label="Close Aero modal">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="aero-grid">
+                <div class="aero-panel">
+                    <div class="aero-context">
+                        <div>
+                            <p class="aero-label">Context</p>
+                            <p class="aero-context-title" id="aero-context-name">No project selected</p>
+                            <small class="aero-context-meta" id="aero-context-meta">Open a project to send content to Aero.</small>
+                        </div>
+                        <span class="aero-pill" id="aero-context-type">Idle</span>
+                    </div>
+                    <div class="aero-action-header" id="aero-action-header" style="display:none;">
+                        <p class="aero-action-title" id="aero-action-title">Summarize document</p>
+                        <small class="aero-action-subtitle" id="aero-action-subtitle">Aero will summarize all visible content.</small>
+                    </div>
+                    <div id="aero-action-picker">
+                        <label class="form-label" for="aero-action">Action</label>
+                        <select class="form-input" id="aero-action">
+                            <option value="summarize">Summarize</option>
+                            <option value="explain">Explain</option>
+                            <option value="rewrite">Rewrite</option>
+                            <option value="questions">Study Questions</option>
+                        </select>
+                    </div>
+                    <label class="form-label" for="aero-focus">What should Aero focus on? (optional)</label>
+                    <textarea class="form-input" id="aero-focus" placeholder="Key takeaways, main ideas, next steps, definitions…"></textarea>
+                    <div class="aero-actions">
+                        <button class="btn btn-aero" id="aero-run-btn" type="button" onclick="runAeroAction()">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            Run with Aero
+                        </button>
+                        <button class="btn btn-secondary" type="button" onclick="closeAeroModal()">Close</button>
+                    </div>
+                </div>
+                <div class="aero-output">
+                    <div class="aero-output-header">
+                        <span>Result</span>
+                        <span class="aero-status" id="aero-status">Status: Not checked</span>
+                    </div>
+                    <div class="aero-output-body" id="aero-output">Your summary will appear here.</div>
+                    <details class="aero-info" id="aero-about" open>
+                        <summary>About Aero</summary>
+                        <p>Aero powers Note26 summaries, rewrites, explanations, and study questions.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

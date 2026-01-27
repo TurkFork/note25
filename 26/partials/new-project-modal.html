@@ -1,0 +1,35 @@
+<div class="modal-overlay" id="new-project-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Create New Project</h2>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Project Name</label>
+                <input type="text" class="form-input" id="new-project-name" placeholder="My Awesome Project">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Project Type</label>
+                <select class="form-input" id="new-project-type" onchange="updateTemplateOptions()">
+                    <option value="presentation">Presentation</option>
+                    <option value="document">Document</option>
+                    <option value="spreadsheet">Spreadsheet</option>
+                    <option value="notes">Quick Notes</option>
+                </select>
+            </div>
+            <div class="form-group" id="template-selection">
+                <label class="form-label">
+                    Template (Optional)
+                    <span style="font-weight: 400; color: var(--text-muted); font-size: 0.875rem;">- Start with pre-built content</span>
+                </label>
+                <select class="form-input" id="new-project-template">
+                    <option value="">Blank Project</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeNewProjectModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="createProject()">Create Project</button>
+        </div>
+    </div>
+</div>

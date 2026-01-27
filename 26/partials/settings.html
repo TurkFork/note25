@@ -1,0 +1,175 @@
+<div class="settings-page" id="settings-page" style="display: none;">
+    <div class="settings-hero">
+        <div>
+            <p class="settings-badge">WORKSPACE</p>
+            <h1>Customize Note26</h1>
+            <p>Tune themes, autosave, layout density, and backup preferences.</p>
+        </div>
+        <button class="btn btn-secondary" type="button" onclick="goHome()">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </button>
+    </div>
+
+    <div class="settings-grid">
+        <section class="settings-panel">
+            <header>
+                <h3>Theme</h3>
+                <p>Choose a preset that matches your mood.</p>
+            </header>
+            <div class="theme-grid">
+                <label class="theme-card" data-theme-option="aurora">
+                    <input type="radio" name="settings-theme-card" value="aurora" hidden>
+                    <div class="theme-card-body">
+                        <span>Aurora</span>
+                        <small>Default gradient</small>
+                    </div>
+                </label>
+                <label class="theme-card" data-theme-option="midnight">
+                    <input type="radio" name="settings-theme-card" value="midnight" hidden>
+                    <div class="theme-card-body">
+                        <span>Midnight</span>
+                        <small>Deep contrast</small>
+                    </div>
+                </label>
+                <label class="theme-card" data-theme-option="sunset">
+                    <input type="radio" name="settings-theme-card" value="sunset" hidden>
+                    <div class="theme-card-body">
+                        <span>Sunset</span>
+                        <small>Warm vibes</small>
+                    </div>
+                </label>
+                <label class="theme-card" data-theme-option="ocean">
+                    <input type="radio" name="settings-theme-card" value="ocean" hidden>
+                    <div class="theme-card-body">
+                        <span>Ocean</span>
+                        <small>Cool tones</small>
+                    </div>
+                </label>
+                <label class="theme-card" data-theme-option="forest">
+                    <input type="radio" name="settings-theme-card" value="forest" hidden>
+                    <div class="theme-card-body">
+                        <span>Forest</span>
+                        <small>Deep greens</small>
+                    </div>
+                </label>
+                <label class="theme-card" data-theme-option="carbon">
+                    <input type="radio" name="settings-theme-card" value="carbon" hidden>
+                    <div class="theme-card-body">
+                        <span>Carbon</span>
+                        <small>Pro dark</small>
+                    </div>
+                </label>
+            </div>
+            <select class="form-input" id="settings-theme" style="display: none;">
+                <option value="aurora">Aurora</option>
+                <option value="midnight">Midnight</option>
+                <option value="sunset">Sunset</option>
+                <option value="ocean">Ocean</option>
+                <option value="forest">Forest</option>
+                <option value="carbon">Carbon</option>
+            </select>
+            <div class="settings-option-row">
+                <label class="switch-label">
+                    <span>Custom accent color</span>
+                    <label class="form-switch">
+                        <input type="checkbox" id="settings-custom-accent-enabled">
+                        <span class="switch-slider"></span>
+                    </label>
+                </label>
+                <input type="color" class="form-input" id="settings-custom-accent" value="#f59e0b">
+            </div>
+        </section>
+
+        <section class="settings-panel">
+            <header>
+                <h3>Autosave</h3>
+                <p>Control how often Note26 writes to disk for you.</p>
+            </header>
+            <div class="settings-option-row">
+                <label class="switch-label">
+                    <span>Enable autosave</span>
+                    <label class="form-switch">
+                        <input type="checkbox" id="settings-autosave-enabled">
+                        <span class="switch-slider"></span>
+                    </label>
+                </label>
+                <select class="form-input" id="settings-autosave-interval">
+                    <option value="15000">Every 15 seconds</option>
+                    <option value="30000">Every 30 seconds</option>
+                    <option value="60000">Every 60 seconds</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="settings-panel">
+            <header>
+                <h3>Defaults</h3>
+                <p>Pick how Quick Start behaves and how dense the dashboard looks.</p>
+            </header>
+            <div class="settings-option-row">
+                <label>
+                    <span>Quick project type</span>
+                    <select class="form-input" id="settings-default-type">
+                        <option value="document">Document</option>
+                        <option value="presentation">Presentation</option>
+                        <option value="spreadsheet">Spreadsheet</option>
+                        <option value="notes">Quick Notes</option>
+                    </select>
+                </label>
+                <label class="switch-label">
+                    <span>Compact project cards</span>
+                    <label class="form-switch">
+                        <input type="checkbox" id="settings-compact-cards">
+                        <span class="switch-slider"></span>
+                    </label>
+                </label>
+            </div>
+        </section>
+
+        <section class="settings-panel">
+            <header>
+                <h3>Homepage Layout</h3>
+                <p>Customize the order of sections on your homepage.</p>
+            </header>
+            <div class="settings-option-row" style="flex-direction: column; gap: 0.75rem;">
+                <label>
+                    <span>First section</span>
+                    <select class="form-input" id="settings-home-section-1">
+                        <option value="quick-actions">Quick Actions</option>
+                        <option value="recent-projects">Recent Projects</option>
+                    </select>
+                </label>
+                <label>
+                    <span>Second section</span>
+                    <select class="form-input" id="settings-home-section-2">
+                        <option value="quick-actions">Quick Actions</option>
+                        <option value="recent-projects">Recent Projects</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <section class="settings-panel">
+            <header>
+                <h3>Backup & Restore</h3>
+                <p>Protect your work or import existing JSON exports.</p>
+            </header>
+            <div class="settings-option-row">
+                <button class="btn btn-secondary" type="button" onclick="exportAllProjects()">
+                    <i class="fas fa-download"></i>
+                    Export all projects
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="triggerImportProject()">
+                    <i class="fas fa-file-import"></i>
+                    Import projects
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <div class="settings-actions">
+        <button class="btn btn-ghost" type="button" onclick="resetSettings()">Reset Defaults</button>
+        <button class="btn btn-primary" type="button" onclick="saveSettingsFromForm()">Save Changes</button>
+    </div>
+</div>

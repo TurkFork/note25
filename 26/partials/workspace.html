@@ -1,0 +1,37 @@
+<div class="workspace" id="workspace" style="display: none;">
+    <header class="workspace-header">
+        <div class="workspace-title">
+            <button class="btn btn-icon btn-ghost" onclick="goHome()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <input type="text" class="project-name-input" id="project-name" placeholder="Project Name">
+        </div>
+        <div class="workspace-actions">
+            <button class="btn btn-secondary" onclick="openSettingsPage()">
+                <i class="fas fa-gear"></i>
+                Settings
+            </button>
+            <button class="btn btn-secondary" onclick="saveProject()">
+                <i class="fas fa-save"></i>
+                Save
+            </button>
+            <button class="btn btn-primary" onclick="exportProject()">
+                <i class="fas fa-download"></i>
+                Export
+            </button>
+        </div>
+    </header>
+
+    <div class="workspace-content" id="workspace-content"></div>
+
+    <div class="status-bar">
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span id="save-status">All changes saved</span>
+        </div>
+        <div>
+            <span id="word-count">0 words</span>
+            <span style="margin-left: 1rem;" id="char-count">0 characters</span>
+        </div>
+    </div>
+</div>

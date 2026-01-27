@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Note26 vs Competition — Feature Comparison</title>
+  <link rel="icon" type="image/png" href="https://cdn.blacklink.net/Favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --bg: #fafbfc;
+      --bg-dark: #0f172a;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      opacity: 0.95;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      padding: 4rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+    }
+
+    .comparison-table-wrapper {
+      overflow-x: auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1200px;
+    }
+
+    .comparison-table thead th {
+      background: var(--bg);
+      padding: 1.5rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .comparison-table thead th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 11;
+      background: var(--bg);
+    }
+
+    .comparison-table tbody th {
+      position: sticky;
+      left: 0;
+      background: var(--card-bg);
+      font-weight: 600;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      z-index: 9;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .comparison-table tbody td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table .highlight {
+      background: linear-gradient(135deg, #667eea22 0%, #764ba255 100%);
+      font-weight: 700;
+    }
+
+    .comparison-table .highlight th {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .check {
+      color: var(--success);
+      font-size: 1.25rem;
+    }
+
+    .cross {
+      color: #ef4444;
+      font-size: 1.25rem;
+    }
+
+    .price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .price.free {
+      color: var(--success);
+    }
+
+    .price.expensive {
+      color: #ef4444;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h4 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .footer-section p {
+      opacity: 0.8;
+      line-height: 1.8;
+    }
+
+    .footer-section a {
+      display: block;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 0.6;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.75rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .nav-links a:not(.btn) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-layer-group"></i>
+        Note26
+      </a>
+      <div class="nav-links">
+        <a href="index.html#features">Features</a>
+        <a href="compare.html">Compare</a>
+        <a href="26/index.html" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> Launch Note26
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Note26 vs The Competition</h1>
+      <p>See how Note26 stacks up against the top 20 productivity platforms. Free, private, and powerful.</p>
+      <a href="26/index.html" class="btn btn-primary">
+        <i class="fas fa-rocket"></i> Try Note26 Free
+      </a>
+    </div>
+  </section>
+
+  <section class="comparison-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">COMPREHENSIVE COMPARISON</div>
+        <h2>Feature by Feature Breakdown</h2>
+        <p>All the features you need, none of the cost or privacy concerns</p>
+      </div>
+
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="highlight">Note26</th>
+              <th>Microsoft 365</th>
+              <th>Google Workspace</th>
+              <th>Notion</th>
+              <th>Confluence</th>
+              <th>Evernote</th>
+              <th>OneNote</th>
+              <th>Dropbox Paper</th>
+              <th>Zoho Docs</th>
+              <th>Quip</th>
+              <th>Coda</th>
+              <th>ClickUp</th>
+              <th>Monday.com</th>
+              <th>Airtable</th>
+              <th>Asana</th>
+              <th>Trello</th>
+              <th>Obsidian</th>
+              <th>Roam Research</th>
+              <th>Bear</th>
+              <th>Simplenote</th>
+              <th>Apple Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Price</th>
+              <td class="highlight price free">FREE</td>
+              <td class="price expensive">$70-100/yr</td>
+              <td class="price">$6-18/mo</td>
+              <td class="price">Free-$10/mo</td>
+              <td class="price expensive">$5-10/user</td>
+              <td class="price">Free-$8/mo</td>
+              <td class="price free">FREE</td>
+              <td class="price free">FREE</td>
+              <td class="price">Free-$5/mo</td>
+              <td class="price expensive">$10-25/user</td>
+              <td class="price">Free-$12/mo</td>
+              <td class="price">Free-$19/user</td>
+              <td class="price expensive">$8-16/user</td>
+              <td class="price">Free-$20/user</td>
+              <td class="price">Free-$25/user</td>
+              <td class="price">Free-$10/user</td>
+              <td class="price">Free-$8/mo</td>
+              <td class="price expensive">$15/mo</td>
+              <td class="price">Free-$3/mo</td>
+              <td class="price free">FREE</td>
+              <td class="price free">FREE</td>
+            </tr>
+            <tr>
+              <th>Documents</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Presentations</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Spreadsheets</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Quick Notes</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>AI Integration</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>100% Private</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>No Account Required</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Works Offline</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Rich Formatting</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Multiple Themes</th>
+              <td class="highlight"><i class="fas fa-check check"></i> (6)</td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Export Options</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Real-time Collaboration</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Cloud Sync</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Mobile Apps</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+            <tr>
+              <th>Version History</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Templates</th>
+              <td class="highlight"><i class="fas fa-check check"></i> 15+</td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Advanced Formulas</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Team Management</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Comments & Reviews</th>
+              <td class="highlight"><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>No Installation</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+              <td><i class="fas fa-times cross"></i></td>
+            </tr>
+            <tr>
+              <th>Auto-Save</th>
+              <td class="highlight"><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+              <td><i class="fas fa-check check"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="comparison-section" style="background: var(--bg);">
+    <div class="container" style="text-align: center;">
+      <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">The Verdict</h2>
+      <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+        Note26 offers the best combination of features, privacy, and value. Four powerful apps, completely free, with no account required.
+      </p>
+      <a href="26/index.html" class="btn btn-primary" style="background: var(--primary); color: white;">
+        <i class="fas fa-rocket"></i> Start Using Note26 Free
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Note26</h4>
+          <p>All-in-one productivity suite powered by Aero AI. Documents, presentations, spreadsheets, and notes in one place.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Product</h4>
+          <a href="26/index.html">Launch Note26</a>
+          <a href="note.html">Note25 Legacy</a>
+          <a href="index.html#features">Features</a>
+          <a href="compare.html">Compare</a>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">Keyboard Shortcuts</a>
+          <a href="#">Privacy Policy</a>
+          <a href="https://beta.aero.blacklink.net">Aero Platform</a>
+        </div>
+        <div class="footer-section">
+          <h4>Company</h4>
+          <a href="https://blacklink.net">Blacklink</a>
+          <a href="https://github.com/BlacklinkLLC">GitHub</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Blacklink, Inc. All rights reserved. Licensed under CC-BY-SA-4.0
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<div class="main-content" id="home-page">
+    <div class="home-page">
+        <div class="home-header">
+            <h1 class="home-title">Welcome to Note26</h1>
+            <p class="home-subtitle">Your all-in-one productivity workspace</p>
+            <div class="home-actions">
+                <button class="btn btn-primary" onclick="openNewProjectModal()">
+                    <i class="fas fa-plus"></i>
+                    New Project
+                </button>
+                <button class="btn btn-secondary" onclick="createQuickProject()">
+                    <i class="fas fa-bolt"></i>
+                    Quick Start
+                </button>
+                <button class="btn btn-secondary" onclick="openSettingsPage()">
+                    <i class="fas fa-gear"></i>
+                    Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="home-insights">
+            <div class="insight-card">
+                <p class="insight-label">Active projects</p>
+                <h3 id="insight-projects">0</h3>
+                <span class="insight-meta" id="insight-last-edit">No edits yet</span>
+            </div>
+            <div class="insight-card">
+                <p class="insight-label">Autosave</p>
+                <h3 id="insight-autosave">On</h3>
+                <span class="insight-meta" id="insight-interval">Every 30s</span>
+            </div>
+            <div class="insight-card insight-aero">
+                <div class="insight-aero-header">
+                    <span class="insight-badge">AERO</span>
+                    <button class="btn btn-aero btn-small" onclick="openAeroModal()">Aero</button>
+                </div>
+                <p class="insight-aero-text">Summaries, rewrites, and study prompts powered by Aero.</p>
+                <div class="insight-aero-footer">
+                    <span id="insight-aero-status">Status: Connect your Aero gateway</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-controls">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="project-search" placeholder="Search projects...">
+            </div>
+            <select class="home-filter-select" id="project-sort">
+                <option value="recent">Sort: Recent</option>
+                <option value="name">Sort: Name (A-Z)</option>
+                <option value="type">Sort: Type</option>
+            </select>
+                <button class="btn btn-secondary" onclick="openSettingsPage()">
+                <i class="fas fa-gear"></i>
+                Settings
+            </button>
+        </div>
+
+        <input type="file" id="import-project-input" accept="application/json" hidden>
+
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+        </div>
+
+        <div class="quick-actions">
+            <div class="quick-action-card" onclick="createQuickProject('presentation')">
+                <div class="quick-action-icon">
+                    <i class="fas fa-presentation-screen"></i>
+                </div>
+                <div class="quick-action-title">Presentation</div>
+                <div class="quick-action-desc">Create slides and present</div>
+            </div>
+
+            <div class="quick-action-card" onclick="createQuickProject('document')">
+                <div class="quick-action-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="quick-action-title">Document</div>
+                <div class="quick-action-desc">Write and format text</div>
+            </div>
+
+            <div class="quick-action-card" onclick="createQuickProject('spreadsheet')">
+                <div class="quick-action-icon">
+                    <i class="fas fa-table"></i>
+                </div>
+                <div class="quick-action-title">Spreadsheet</div>
+                <div class="quick-action-desc">Organize data in tables</div>
+            </div>
+
+            <div class="quick-action-card" onclick="createQuickProject('notes')">
+                <div class="quick-action-icon">
+                    <i class="fas fa-sticky-note"></i>
+                </div>
+                <div class="quick-action-title">Quick Notes</div>
+                <div class="quick-action-desc">Capture ideas quickly</div>
+            </div>
+
+            <div class="quick-action-card" onclick="resumeLastProject()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-rotate-right"></i>
+                </div>
+                <div class="quick-action-title">Resume Last</div>
+                <div class="quick-action-desc">Open your most recent project</div>
+            </div>
+
+            <div class="quick-action-card" onclick="triggerImportProject()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-file-import"></i>
+                </div>
+                <div class="quick-action-title">Import JSON</div>
+                <div class="quick-action-desc">Bring in saved projects</div>
+            </div>
+
+            <div class="quick-action-card" onclick="importNote25Documents()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="quick-action-title">Import Note25</div>
+                <div class="quick-action-desc">Transfer from Note25</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Recent Projects</h2>
+            <span class="project-count" id="project-count">0 projects</span>
+        </div>
+
+        <div class="projects-grid" id="projects-grid"></div>
+    </div>
+</div>
